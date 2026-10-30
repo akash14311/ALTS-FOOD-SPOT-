@@ -1,6 +1,6 @@
-# 🎓 food spot: Comprehensive Project & Viva Examination Guide
+# 🎓 ALTS FOOD spot: Comprehensive Project & Viva Examination Guide
 
-> **Project Title:** food spot - Full-Stack MERN Food Delivery App  
+> **Project Title:** ALTS FOOD spot - Full-Stack MERN Food Delivery App  
 > **Tagline:** *"Your cravings. Our mission."*  
 > **Degree Program:** B.Tech / B.E. in Computer Science & Engineering / Information Technology  
 > **Course:** Web Technologies / Full-Stack Development Mini Project
@@ -10,7 +10,7 @@
 ## 1. Project Explanation & Objectives
 
 ### 1.1 Problem Statement
-In urban environments, hungry customers often face delayed meal deliveries, non-transparent delivery pricing, and complex user interfaces. Conversely, independent food businesses struggle to find lightweight, transparent digital platforms to showcase their menus. **food spot** resolves these issues by offering a fast, responsive, transparent, and aesthetically appealing hyper-local food delivery platform.
+In urban environments, hungry customers often face delayed meal deliveries, non-transparent delivery pricing, and complex user interfaces. Conversely, independent food businesses struggle to find lightweight, transparent digital platforms to showcase their menus. **ALTS FOOD spot** resolves these issues by offering a fast, responsive, transparent, and aesthetically appealing hyper-local food delivery platform.
 
 ### 1.2 Core Objectives
 1. **Full-Stack MERN Architecture:** Build a decoupled application using React 18 on the frontend and Node.js/Express with MongoDB on the backend.

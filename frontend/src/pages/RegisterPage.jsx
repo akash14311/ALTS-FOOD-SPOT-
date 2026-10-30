@@ -192,7 +192,7 @@ const RegisterPage = () => {
       setLoading(true);
       const secondary = activeChannel === 'phone' ? emailAddress.trim() : mobileNumber.trim();
       await verifyOtp(activeIdentifier, code, name.trim(), activeChannel, secondary);
-      setSuccessMsg('Account verified & created successfully! Welcome to food spot.');
+      setSuccessMsg('Account verified & created successfully! Welcome to ALTS FOOD spot.');
       setTimeout(() => navigate(destination, { replace: true }), 500);
     } catch (err) {
       setError(err.message || 'Verification failed');
@@ -253,7 +253,7 @@ const RegisterPage = () => {
       <div className="auth-card" style={{ maxWidth: '490px' }}>
         <div className="auth-header">
           <Link to="/" className="auth-brand-logo">
-            <IoFastFoodOutline /> food<span>spot</span>
+            <IoFastFoodOutline /> ALTS FOOD<span> spot</span>
           </Link>
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">

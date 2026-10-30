@@ -60,7 +60,7 @@ const CustomerSupportModal = ({ isOpen, onClose, initialTab = 'chat', order }) =
         {
           id: 1,
           sender: 'agent',
-          text: `Hi there! I'm Alex, your dedicated FoodSpot Priority Concierge. I am actively monitoring Order #${order?._id ? order._id.slice(-6).toUpperCase() : 'ORDER'} from ${order?.restaurant?.name || 'Restaurant'}. How can I assist you right now?`,
+          text: `Hi there! I'm Alex, your dedicated ALTS FOOD spot Priority Concierge. I am actively monitoring Order #${order?._id ? order._id.slice(-6).toUpperCase() : 'ORDER'} from ${order?.restaurant?.name || 'Restaurant'}. How can I assist you right now?`,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
@@ -135,7 +135,7 @@ const CustomerSupportModal = ({ isOpen, onClose, initialTab = 'chat', order }) =
 
   const handleClaimCompensation = () => {
     setCompensationClaimed(true);
-    showToast('₹50 FoodSpot Late Delivery Credit applied to your account!', 'success');
+    showToast('₹50 ALTS FOOD spot Late Delivery Credit applied to your account!', 'success');
   };
 
   const handleSubmitIssue = (e) => {
@@ -155,7 +155,7 @@ const CustomerSupportModal = ({ isOpen, onClose, initialTab = 'chat', order }) =
   const handleSubmitDrawback = (e) => {
     e.preventDefault();
     setDrawbackSubmitted(true);
-    showToast('Thank you for helping us improve FoodSpot! Code "BETAHERO" unlocked.', 'success');
+    showToast('Thank you for helping us improve ALTS FOOD spot! Code "BETAHERO" unlocked.', 'success');
   };
 
   const toggleTag = (tag) => {
@@ -323,9 +323,9 @@ const CustomerSupportModal = ({ isOpen, onClose, initialTab = 'chat', order }) =
                 <div className="action-card-header">
                   <FiShield size={20} style={{ color: '#10B981' }} />
                   <div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '700' }}>FoodSpot On-Time Guarantee</h4>
+                    <h4 style={{ fontSize: '1rem', fontWeight: '700' }}>ALTS FOOD spot On-Time Guarantee</h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                      If your delivery exceeds 35 minutes from ordering, claim an instant ₹50 FoodSpot wallet credit.
+                      If your delivery exceeds 35 minutes from ordering, claim an instant ₹50 ALTS FOOD spot wallet credit.
                     </p>
                   </div>
                 </div>
@@ -467,7 +467,7 @@ const CustomerSupportModal = ({ isOpen, onClose, initialTab = 'chat', order }) =
                   </div>
                   <h3 style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Review Published!</h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '420px', margin: '0 auto 1.5rem' }}>
-                    Your feedback rewards Chef Farhan and Courier Rahul. 20 FoodSpot Gourmet Loyalty Points added to your account!
+                    Your feedback rewards Chef Farhan and Courier Rahul. 20 ALTS FOOD spot Gourmet Loyalty Points added to your account!
                   </p>
                   <button className="btn btn-primary btn-sm" onClick={onClose}>
                     Done

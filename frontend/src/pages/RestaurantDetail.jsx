@@ -13,7 +13,10 @@ import {
   FiMinus,
   FiShoppingBag,
   FiArrowRight,
+  FiActivity,
 } from 'react-icons/fi';
+import { getDishQuantity } from '../services/mockData';
+import NutritionFactsModal from '../components/common/NutritionFactsModal';
 import '../styles/restaurants.css';
 
 const RestaurantDetail = () => {
@@ -28,6 +31,16 @@ const RestaurantDetail = () => {
   const [activeCategory, setActiveCategory] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
   const [highlightedDishId, setHighlightedDishId] = useState(null);
+  const [selectedQtyMap, setSelectedQtyMap] = useState({});
+  const [nutritionModalDish, setNutritionModalDish] = useState(null);
+
+  const handleSelectedQtyChange = (dishId, delta) => {
+    setSelectedQtyMap((prev) => {
+      const current = prev[dishId] || 1;
+      const next = Math.max(1, Math.min(20, current + delta));
+      return { ...prev, [dishId]: next };
+    });
+  };
 
   const searchParams = new URLSearchParams(location.search);
   const highlightDishName = searchParams.get('highlight');
@@ -267,12 +280,27 @@ const RestaurantDetail = () => {
                         </div>
 
                         <h3 style={{ fontSize: '1.1rem', marginBottom: '0.35rem' }}>{dish.name}</h3>
-                        <div style={{ fontWeight: '800', fontSize: '1.1rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
-                          ₹{dish.price}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
+                          <span style={{ fontWeight: '800', fontSize: '1.15rem', color: 'var(--text-main)' }}>
+                            ₹{dish.price}
+                          </span>
+                          <span className="dish-quantity-pill">
+                            📦 Qty: <strong>{dish.quantity || getDishQuantity(dish)}</strong>
+                          </span>
                         </div>
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
                           {dish.description}
                         </p>
+                        <div style={{ marginTop: '0.5rem' }}>
+                          <button
+                            type="button"
+                            className="btn-nutrition-facts"
+                            onClick={() => setNutritionModalDish(dish)}
+                            title={`View detailed macro nutrition facts for ${dish.name}`}
+                          >
+                            <FiActivity size={12} /> Nutrition Facts
+                          </button>
+                        </div>
                       </div>
 
                       <div className="menu-item-img-wrap">
@@ -290,31 +318,65 @@ const RestaurantDetail = () => {
 
                         <div className="menu-item-add-btn-wrap">
                           {qty === 0 ? (
-                            <button
-                              className="btn btn-primary btn-sm"
-                              style={{ padding: '0.45rem 1.25rem', boxShadow: 'var(--shadow-md)' }}
-                              onClick={() => addToCart(dish, restaurant)}
-                              id={`add-food-${dish._id}`}
-                            >
-                              <FiPlus /> Add
-                            </button>
+                            <div className="product-qty-selector">
+                              <div className="qty-picker">
+                                <button
+                                  type="button"
+                                  className="qty-picker-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSelectedQtyChange(dish._id, -1);
+                                  }}
+                                  disabled={(selectedQtyMap[dish._id] || 1) <= 1}
+                                  aria-label="Decrease quantity"
+                                  title="Decrease quantity to purchase"
+                                >
+                                  <FiMinus size={11} />
+                                </button>
+                                <span className="qty-picker-val">{selectedQtyMap[dish._id] || 1}</span>
+                                <button
+                                  type="button"
+                                  className="qty-picker-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSelectedQtyChange(dish._id, 1);
+                                  }}
+                                  aria-label="Increase quantity"
+                                  title="Increase quantity to purchase"
+                                >
+                                  <FiPlus size={11} />
+                                </button>
+                              </div>
+
+                              <button
+                                className="btn btn-primary btn-sm btn-add-qty"
+                                onClick={() => addToCart(dish, restaurant, selectedQtyMap[dish._id] || 1)}
+                                id={`add-food-${dish._id}`}
+                                title={`Add ${selectedQtyMap[dish._id] || 1} to cart`}
+                              >
+                                <FiPlus /> Add {(selectedQtyMap[dish._id] || 1) > 1 ? `(${selectedQtyMap[dish._id]})` : ''}
+                              </button>
+                            </div>
                           ) : (
-                            <div className="qty-stepper" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)' }}>
-                              <button
-                                className="qty-stepper-btn"
-                                onClick={() => updateQuantity(dish._id, qty - 1)}
-                                aria-label="Decrease quantity"
-                              >
-                                <FiMinus />
-                              </button>
-                              <span className="qty-val">{qty}</span>
-                              <button
-                                className="qty-stepper-btn"
-                                onClick={() => updateQuantity(dish._id, qty + 1)}
-                                aria-label="Increase quantity"
-                              >
-                                <FiPlus />
-                              </button>
+                            <div className="product-in-cart-wrap">
+                              <div className="qty-stepper" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)' }}>
+                                <button
+                                  className="qty-stepper-btn"
+                                  onClick={() => updateQuantity(dish._id, qty - 1)}
+                                  aria-label="Decrease quantity"
+                                >
+                                  <FiMinus />
+                                </button>
+                                <span className="qty-val">{qty}</span>
+                                <button
+                                  className="qty-stepper-btn"
+                                  onClick={() => updateQuantity(dish._id, qty + 1)}
+                                  aria-label="Increase quantity"
+                                >
+                                  <FiPlus />
+                                </button>
+                              </div>
+                              <span className="in-cart-subtext">✓ {qty} in cart</span>
                             </div>
                           )}
                         </div>
@@ -345,6 +407,14 @@ const RestaurantDetail = () => {
           </Link>
         </div>
       )}
+
+      {/* Macro Nutrition Facts Modal */}
+      <NutritionFactsModal
+        isOpen={Boolean(nutritionModalDish)}
+        onClose={() => setNutritionModalDish(null)}
+        dish={nutritionModalDish}
+        restaurant={restaurant}
+      />
     </div>
   );
 };

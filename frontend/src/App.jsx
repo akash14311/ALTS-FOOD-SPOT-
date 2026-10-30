@@ -4,6 +4,7 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { AiAssistantProvider } from './context/AiAssistantContext';
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -81,51 +82,53 @@ function App() {
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
-            <Router>
-              <div className="app-container">
-                <Navbar />
-                <main>
-                  <Suspense fallback={<PageLoader />}>
-                    <Routes>
-                      {/* Public routes */}
-                      <Route path="/" element={<Home />} />
-                      <Route path="/login" element={<LoginPage />} />
-                      <Route path="/register" element={<RegisterPage />} />
-                      <Route path="/restaurants" element={<Restaurants />} />
-                      <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-                      <Route path="/search" element={<SearchPage />} />
-                      <Route path="/offers" element={<OffersPage />} />
-                      <Route path="/cart" element={<CartPage />} />
+            <AiAssistantProvider>
+              <Router>
+                <div className="app-container">
+                  <Navbar />
+                  <main>
+                    <Suspense fallback={<PageLoader />}>
+                      <Routes>
+                        {/* Public routes */}
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/restaurants" element={<Restaurants />} />
+                        <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+                        <Route path="/search" element={<SearchPage />} />
+                        <Route path="/offers" element={<OffersPage />} />
+                        <Route path="/cart" element={<CartPage />} />
 
-                      {/* Static informational pages */}
-                      <Route path="/about" element={<StaticPage />} />
-                      <Route path="/contact" element={<StaticPage />} />
-                      <Route path="/careers" element={<StaticPage />} />
-                      <Route path="/privacy" element={<StaticPage />} />
-                      <Route path="/terms" element={<StaticPage />} />
-                      <Route path="/help" element={<StaticPage />} />
+                        {/* Static informational pages */}
+                        <Route path="/about" element={<StaticPage />} />
+                        <Route path="/contact" element={<StaticPage />} />
+                        <Route path="/careers" element={<StaticPage />} />
+                        <Route path="/privacy" element={<StaticPage />} />
+                        <Route path="/terms" element={<StaticPage />} />
+                        <Route path="/help" element={<StaticPage />} />
 
-                      {/* User routes */}
-                      <Route path="/favorites" element={<FavoritesPage />} />
-                      <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-                      <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
-                      <Route path="/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
-                      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                        {/* User routes */}
+                        <Route path="/favorites" element={<FavoritesPage />} />
+                        <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+                        <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+                        <Route path="/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
+                        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-                      {/* Admin routes */}
-                      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                      <Route path="/admin/restaurants" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                      <Route path="/admin/foods" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                      <Route path="/admin/orders" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                        {/* Admin routes */}
+                        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                        <Route path="/admin/restaurants" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                        <Route path="/admin/foods" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                        <Route path="/admin/orders" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
-                      {/* 404 Catch-all */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Suspense>
-                </main>
-                <Footer />
-              </div>
-            </Router>
+                        {/* 404 Catch-all */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Suspense>
+                  </main>
+                  <Footer />
+                </div>
+              </Router>
+            </AiAssistantProvider>
           </CartProvider>
         </AuthProvider>
       </ToastProvider>

@@ -4,13 +4,13 @@ import { FiMail, FiPhone, FiMapPin, FiShield, FiFileText, FiHelpCircle, FiUsers,
 
 const pageData = {
   '/about': {
-    title: 'About food spot',
+    title: 'About ALTS FOOD spot',
     subtitle: 'Connecting food lovers with the finest kitchens across the city.',
     icon: <FiUsers size={32} color="var(--primary)" />,
     content: (
       <div>
         <p style={{ marginBottom: '1rem', lineHeight: '1.7' }}>
-          Welcome to <strong>food spot</strong> — where cravings meet unmatched speed. We started with a simple belief: great food shouldn’t take forever, and everyone deserves access to fresh, hygienic, and authentic dishes from beloved local eateries.
+          Welcome to <strong>ALTS FOOD spot</strong> — where cravings meet unmatched speed. We started with a simple belief: great food shouldn’t take forever, and everyone deserves access to fresh, hygienic, and authentic dishes from beloved local eateries.
         </p>
         <p style={{ marginBottom: '1rem', lineHeight: '1.7' }}>
           Whether it’s late-night aromatic Dum Biryani, stone-baked artisanal pizzas, crispy street snacks, or wholesome south Indian dosas, our fleet runs round the clock to deliver pure joy to your doorstep.
@@ -40,7 +40,7 @@ const pageData = {
           <div style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
             <FiMail size={24} color="var(--primary)" style={{ marginBottom: '0.5rem' }} />
             <h4>Email Support</h4>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>support@foodspot.com</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>support@altsfoodspot.com</p>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Response within 2 hours</span>
           </div>
           <div style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
@@ -53,13 +53,13 @@ const pageData = {
     )
   },
   '/careers': {
-    title: 'Work With food spot',
+    title: 'Work With ALTS FOOD spot',
     subtitle: 'Build the next generation of hyper-local logistics and customer delight.',
     icon: <FiBriefcase size={32} color="var(--primary)" />,
     content: (
       <div>
         <p style={{ marginBottom: '1.5rem', lineHeight: '1.7' }}>
-          At food spot, our engineering and operations teams tackle challenging engineering, route optimization, and customer satisfaction problems daily.
+          At ALTS FOOD spot, our engineering and operations teams tackle challenging engineering, route optimization, and customer satisfaction problems daily.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ padding: '1.25rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -87,7 +87,7 @@ const pageData = {
     content: (
       <div style={{ lineHeight: '1.8' }}>
         <p style={{ marginBottom: '1rem' }}>
-          food spot collects only the data necessary to deliver your orders accurately and securely: your name, contact phone number, delivery addresses, and encrypted authentication tokens.
+          ALTS FOOD spot collects only the data necessary to deliver your orders accurately and securely: your name, contact phone number, delivery addresses, and encrypted authentication tokens.
         </p>
         <p style={{ marginBottom: '1rem' }}>
           We never store full credit or debit card numbers on our servers. All payment handling is secured with end-to-end tokenization and industry standard SSL/TLS encryption.
@@ -97,12 +97,12 @@ const pageData = {
   },
   '/terms': {
     title: 'Terms & Conditions',
-    subtitle: 'Guidelines governing the usage of food spot services and ordering platform.',
+    subtitle: 'Guidelines governing the usage of ALTS FOOD spot services and ordering platform.',
     icon: <FiFileText size={32} color="var(--primary)" />,
     content: (
       <div style={{ lineHeight: '1.8' }}>
         <p style={{ marginBottom: '1rem' }}>
-          By creating an account and placing orders on food spot, you agree to provide accurate delivery and contact information.
+          By creating an account and placing orders on ALTS FOOD spot, you agree to provide accurate delivery and contact information.
         </p>
         <p style={{ marginBottom: '1rem' }}>
           <strong>Cancellations:</strong> Users may cancel orders while they are in "Placed" or "Accepted" states without any cancellation penalties. Once preparation begins, cancellation cannot be processed.

@@ -1,7 +1,7 @@
 {
-  "name": "food-spot",
+  "name": "alts-food-spot",
   "version": "1.0.0",
-  "description": "food spot - Full-Stack MERN Food Delivery App (Your cravings. Our mission.)",
+  "description": "ALTS FOOD spot - Full-Stack MERN Food Delivery App (Your cravings. Our mission.)",
   "scripts": {
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm run server\" \"npm run client\"",
     "server": "npm --prefix backend run dev",
@@ -18,7 +18,7 @@
     "mongodb",
     "nodejs"
   ],
-  "author": "food spot Team",
+  "author": "ALTS FOOD spot Team",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^10.0.6"

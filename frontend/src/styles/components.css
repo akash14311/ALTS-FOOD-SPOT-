@@ -131,3 +131,109 @@
     transform: scale(1);
   }
 }
+
+/* ========================================================
+   PRODUCT QUANTITY MENTION & INTERACTIVE SELECTION
+   ======================================================== */
+
+.dish-quantity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: rgba(255, 77, 46, 0.08);
+  border: 1px solid rgba(255, 77, 46, 0.2);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .dish-quantity-pill {
+  background: rgba(255, 77, 46, 0.15);
+  border-color: rgba(255, 77, 46, 0.3);
+  color: #ffb4a2;
+}
+
+.dish-quantity-pill strong {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+/* Quantity Selection Container */
+.product-qty-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.qty-picker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 2px 4px;
+  box-shadow: var(--shadow-sm);
+  min-width: 86px;
+}
+
+.qty-picker-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.qty-picker-btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.qty-picker-btn:disabled {
+  color: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.qty-picker-val {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 18px;
+  text-align: center;
+}
+
+.btn-add-qty {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.85rem;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-full);
+}
+
+.product-in-cart-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.in-cart-subtext {
+  font-size: 0.72rem;
+  color: var(--success);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}

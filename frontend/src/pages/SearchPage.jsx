@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import API from '../services/api';
 import { useCart } from '../context/CartContext';
-import { FiSearch, FiStar, FiClock, FiPlus, FiMinus, FiX } from 'react-icons/fi';
+import { getDishQuantity } from '../services/mockData';
+import { FiSearch, FiStar, FiClock, FiPlus, FiMinus, FiX, FiActivity } from 'react-icons/fi';
+import NutritionFactsModal from '../components/common/NutritionFactsModal';
 import '../styles/restaurants.css';
 
 const SearchPage = () => {
@@ -12,7 +14,17 @@ const SearchPage = () => {
   const [query, setQuery] = useState(queryParam);
   const [results, setResults] = useState({ restaurants: [], foods: [], cuisines: [] });
   const [loading, setLoading] = useState(false);
+  const [selectedQtyMap, setSelectedQtyMap] = useState({});
+  const [nutritionModalDish, setNutritionModalDish] = useState(null);
   const { addToCart, updateQuantity, items: cartItems } = useCart();
+
+  const handleSelectedQtyChange = (dishId, delta) => {
+    setSelectedQtyMap((prev) => {
+      const current = prev[dishId] || 1;
+      const next = Math.max(1, Math.min(20, current + delta));
+      return { ...prev, [dishId]: next };
+    });
+  };
 
   // Debounced search
   useEffect(() => {
@@ -246,40 +258,90 @@ const SearchPage = () => {
                       </div>
 
                       <h3 style={{ fontSize: '1.05rem', marginBottom: '0.25rem' }}>{food.name}</h3>
-                      <div style={{ fontWeight: '800', fontSize: '1.1rem', marginBottom: '0.4rem' }}>
-                        ₹{food.price}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontWeight: '800', fontSize: '1.1rem', color: 'var(--text-main)' }}>
+                          ₹{food.price}
+                        </span>
+                        <span className="dish-quantity-pill">
+                          📦 Qty: <strong>{food.quantity || getDishQuantity(food)}</strong>
+                        </span>
                       </div>
                       <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
                         {food.description}
                       </p>
+                      <div style={{ marginTop: '0.4rem' }}>
+                        <button
+                          type="button"
+                          className="btn-nutrition-facts"
+                          onClick={() => setNutritionModalDish({ ...food, restaurantInfo: restObj })}
+                          title={`View detailed macro nutrition facts for ${food.name}`}
+                        >
+                          <FiActivity size={12} /> Nutrition Facts
+                        </button>
+                      </div>
                     </div>
 
                     <div className="menu-item-img-wrap">
                       <img src={food.image} alt={food.name} className="menu-item-img" />
                       <div className="menu-item-add-btn-wrap">
                         {qty === 0 ? (
-                          <button
-                            className="btn btn-primary btn-sm"
-                            onClick={() => addToCart(food, restObj)}
-                            id={`add-search-food-${food._id}`}
-                          >
-                            <FiPlus /> Add
-                          </button>
+                          <div className="product-qty-selector">
+                            <div className="qty-picker">
+                              <button
+                                type="button"
+                                className="qty-picker-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSelectedQtyChange(food._id, -1);
+                                }}
+                                disabled={(selectedQtyMap[food._id] || 1) <= 1}
+                                aria-label="Decrease quantity"
+                                title="Decrease quantity to purchase"
+                              >
+                                <FiMinus size={11} />
+                              </button>
+                              <span className="qty-picker-val">{selectedQtyMap[food._id] || 1}</span>
+                              <button
+                                type="button"
+                                className="qty-picker-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSelectedQtyChange(food._id, 1);
+                                }}
+                                aria-label="Increase quantity"
+                                title="Increase quantity to purchase"
+                              >
+                                <FiPlus size={11} />
+                              </button>
+                            </div>
+
+                            <button
+                              className="btn btn-primary btn-sm btn-add-qty"
+                              onClick={() => addToCart(food, restObj, selectedQtyMap[food._id] || 1)}
+                              id={`add-search-food-${food._id}`}
+                              title={`Add ${selectedQtyMap[food._id] || 1} to cart`}
+                            >
+                              <FiPlus /> Add {(selectedQtyMap[food._id] || 1) > 1 ? `(${selectedQtyMap[food._id]})` : ''}
+                            </button>
+                          </div>
                         ) : (
-                          <div className="qty-stepper" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-sm)' }}>
-                            <button
-                              className="qty-stepper-btn"
-                              onClick={() => updateQuantity(food._id, qty - 1)}
-                            >
-                              <FiMinus />
-                            </button>
-                            <span className="qty-val">{qty}</span>
-                            <button
-                              className="qty-stepper-btn"
-                              onClick={() => updateQuantity(food._id, qty + 1)}
-                            >
-                              <FiPlus />
-                            </button>
+                          <div className="product-in-cart-wrap">
+                            <div className="qty-stepper" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-sm)' }}>
+                              <button
+                                className="qty-stepper-btn"
+                                onClick={() => updateQuantity(food._id, qty - 1)}
+                              >
+                                <FiMinus />
+                              </button>
+                              <span className="qty-val">{qty}</span>
+                              <button
+                                className="qty-stepper-btn"
+                                onClick={() => updateQuantity(food._id, qty + 1)}
+                              >
+                                <FiPlus />
+                              </button>
+                            </div>
+                            <span className="in-cart-subtext">✓ {qty} in cart</span>
                           </div>
                         )}
                       </div>
@@ -291,6 +353,13 @@ const SearchPage = () => {
           </div>
         )}
       </div>
+      {/* Macro Nutrition Facts Modal */}
+      <NutritionFactsModal
+        isOpen={Boolean(nutritionModalDish)}
+        onClose={() => setNutritionModalDish(null)}
+        dish={nutritionModalDish}
+        restaurant={nutritionModalDish?.restaurantInfo || results.restaurants[0]}
+      />
     </div>
   );
 };

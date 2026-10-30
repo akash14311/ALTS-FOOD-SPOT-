@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('foodspot_user');
+      const savedUser = localStorage.getItem('altsfoodspot_user') || localStorage.getItem('foodspot_user');
       return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const [token, setToken] = useState(() => {
-    return localStorage.getItem('foodspot_token') || null;
+    return localStorage.getItem('altsfoodspot_token') || localStorage.getItem('foodspot_token') || null;
   });
 
   const [loading, setLoading] = useState(true);
@@ -25,8 +25,9 @@ export const AuthProvider = ({ children }) => {
   // Sync token to localStorage
   useEffect(() => {
     if (token) {
-      localStorage.setItem('foodspot_token', token);
+      localStorage.setItem('altsfoodspot_token', token);
     } else {
+      localStorage.removeItem('altsfoodspot_token');
       localStorage.removeItem('foodspot_token');
     }
   }, [token]);
@@ -34,8 +35,9 @@ export const AuthProvider = ({ children }) => {
   // Sync user to localStorage
   useEffect(() => {
     if (user) {
-      localStorage.setItem('foodspot_user', JSON.stringify(user));
+      localStorage.setItem('altsfoodspot_user', JSON.stringify(user));
     } else {
+      localStorage.removeItem('altsfoodspot_user');
       localStorage.removeItem('foodspot_user');
     }
   }, [user]);
@@ -43,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   // Verify and fetch latest user info on app startup
   useEffect(() => {
     const verifyUser = async () => {
-      const storedToken = localStorage.getItem('foodspot_token');
+      const storedToken = localStorage.getItem('altsfoodspot_token') || localStorage.getItem('foodspot_token');
       if (storedToken) {
         try {
           const res = await API.get('/auth/me');
@@ -87,7 +89,7 @@ export const AuthProvider = ({ children }) => {
       if (res.success && res.data) {
         setToken(res.data.token);
         setUser(res.data.user);
-        showToast('Account created successfully! Welcome to food spot.', 'success');
+        showToast('Account created successfully! Welcome to ALTS FOOD spot.', 'success');
         return res.data;
       }
       throw new Error(res.message || 'Registration failed');
@@ -121,7 +123,7 @@ export const AuthProvider = ({ children }) => {
         setUser(res.data.user);
         showToast(
           res.data.isNewUser
-            ? 'Account created successfully! Welcome to food spot.'
+            ? 'Account created successfully! Welcome to ALTS FOOD spot.'
             : `Welcome back, ${res.data.user.name.split(' ')[0]}!`,
           'success'
         );
@@ -138,7 +140,9 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     setToken(null);
     setUser(null);
+    localStorage.removeItem('altsfoodspot_token');
     localStorage.removeItem('foodspot_token');
+    localStorage.removeItem('altsfoodspot_user');
     localStorage.removeItem('foodspot_user');
     showToast('Logged out successfully', 'info');
   }, [showToast]);

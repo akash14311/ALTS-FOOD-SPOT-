@@ -1,7 +1,7 @@
 {
-  "name": "food-spot-backend",
+  "name": "alts-food-spot-backend",
   "version": "1.0.0",
-  "description": "Backend REST API server for food spot delivery app",
+  "description": "Backend REST API server for ALTS FOOD spot delivery app",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

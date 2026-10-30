@@ -1,4 +1,4 @@
-// Consistent JSON response helpers for food spot REST API
+// Consistent JSON response helpers for ALTS FOOD spot REST API
 
 const sendSuccess = (res, message = 'Success', data = null, statusCode = 200) => {
   return res.status(statusCode).json({

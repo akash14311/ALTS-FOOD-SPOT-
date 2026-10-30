@@ -15,7 +15,14 @@ const protect = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'foodspot_super_secure_college_mini_project_secret_key_2026');
+    let decoded;
+    const primarySecret = process.env.JWT_SECRET || 'altsfoodspot_super_secure_college_mini_project_secret_key_2026';
+    try {
+      decoded = jwt.verify(token, primarySecret);
+    } catch (verifyErr) {
+      // Backwards compatibility with previous secret
+      decoded = jwt.verify(token, 'foodspot_super_secure_college_mini_project_secret_key_2026');
+    }
     const user = await User.findById(decoded.id);
 
     if (!user) {

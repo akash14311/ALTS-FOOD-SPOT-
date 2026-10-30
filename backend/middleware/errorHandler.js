@@ -1,4 +1,4 @@
-// Centralized error handling middleware for food spot API
+// Centralized error handling middleware for ALTS FOOD spot API
 const { sendError } = require('../utils/response');
 
 const errorHandler = (err, req, res, next) => {

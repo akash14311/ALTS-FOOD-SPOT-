@@ -15,6 +15,7 @@ import {
   FiX,
   FiAlertCircle,
 } from 'react-icons/fi';
+import { getDishQuantity } from '../services/mockData';
 import '../styles/cart.css';
 
 const CartPage = () => {
@@ -166,7 +167,12 @@ const CartPage = () => {
                     />
                     <div>
                       <div className="cart-item-name">{item.name}</div>
-                      <div className="cart-item-price">₹{item.price} each</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+                        Portion: <strong>{getDishQuantity(item)}</strong>
+                      </div>
+                      <div className="cart-item-price">
+                        ₹{item.price} each <span style={{ color: 'var(--text-light)', fontSize: '0.78rem' }}>• Selected Qty: {item.quantity}</span>
+                      </div>
                     </div>
                   </div>
 

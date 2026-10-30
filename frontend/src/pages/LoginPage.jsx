@@ -183,7 +183,7 @@ const LoginPage = () => {
     try {
       setLoading(true);
       await verifyOtp(activeIdentifier, code, null, activeChannel);
-      setSuccessMsg('Authentication confirmed! Redirecting to food spot...');
+      setSuccessMsg('Authentication confirmed! Redirecting to ALTS FOOD spot...');
       setTimeout(() => navigate(destination, { replace: true }), 500);
     } catch (err) {
       setError(err.message || 'Verification failed');
@@ -236,7 +236,7 @@ const LoginPage = () => {
       <div className="auth-card" style={{ maxWidth: '490px' }}>
         <div className="auth-header">
           <Link to="/" className="auth-brand-logo">
-            <IoFastFoodOutline /> food<span>spot</span>
+            <IoFastFoodOutline /> ALTS FOOD<span> spot</span>
           </Link>
           <h1 className="auth-title">Sign In</h1>
           <p className="auth-subtitle">
@@ -261,10 +261,10 @@ const LoginPage = () => {
             <button
               type="button"
               className="quick-btn"
-              onClick={() => handleQuickFill('rahul@foodspot.com', null, 'email')}
+              onClick={() => handleQuickFill('rahul@altsfoodspot.com', null, 'email')}
               id="demo-email-btn"
             >
-              📧 Email (rahul@foodspot.com)
+              📧 Email (rahul@altsfoodspot.com)
             </button>
             <button
               type="button"
@@ -488,7 +488,7 @@ const LoginPage = () => {
                   type="email"
                   id="login-email"
                   className="form-input"
-                  placeholder="you@foodspot.com"
+                  placeholder="you@altsfoodspot.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

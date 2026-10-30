@@ -11,7 +11,7 @@ const API = axios.create({
 // Request interceptor: Attach JWT token from localStorage if available
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('foodspot_token');
+    const token = localStorage.getItem('altsfoodspot_token') || localStorage.getItem('foodspot_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -52,7 +52,9 @@ API.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       const isAuthRequest = error.config.url.includes('/auth/login') || error.config.url.includes('/auth/register');
       if (!isAuthRequest) {
+        localStorage.removeItem('altsfoodspot_token');
         localStorage.removeItem('foodspot_token');
+        localStorage.removeItem('altsfoodspot_user');
         localStorage.removeItem('foodspot_user');
       }
     }

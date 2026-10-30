@@ -1,14 +1,14 @@
-# 🍔 food spot - Full-Stack MERN Food Delivery App
+# 🍔 ALTS FOOD spot - Full-Stack MERN Food Delivery App
 
 > **Tagline:** *"Your cravings. Our mission."*  
 > **Academic Project:** B.Tech Mini Project in Web Development / Full-Stack MERN Stack  
-> **Brand:** **food spot**
+> **Brand:** **ALTS FOOD spot**
 
 ---
 
 ## 🌟 Project Overview
 
-**food spot** is an end-to-end food delivery web application built with the **MERN stack** (MongoDB, Express, React 18, Node.js). Designed to reflect modern industry standards, it features customer ordering with single-restaurant cart enforcement, server-side calculated pricing and coupons, simulated payments (UPI, Card, COD), an automated background order status progression engine, a complete live delivery tracking timeline, and an administrative portal with sales analytics and CRUD controls.
+**ALTS FOOD spot** is an end-to-end food delivery web application built with the **MERN stack** (MongoDB, Express, React 18, Node.js). Designed to reflect modern industry standards, it features customer ordering with single-restaurant cart enforcement, server-side calculated pricing and coupons, simulated payments (UPI, Card, COD), an automated background order status progression engine, a complete live delivery tracking timeline, and an administrative portal with sales analytics and CRUD controls.
 
 ---
 
@@ -22,7 +22,7 @@
   - Top-rated restaurants showcase with delivery times and price indicators.
   - Popular dishes cards with dynamic quantity steppers (`[- / qty / +]`).
   - Deals & coupon codes with 1-click clipboard copy.
-  - Three-step *"How food spot Works"* explainer.
+  - Three-step *"How ALTS FOOD spot Works"* explainer.
   - Verified foodie customer reviews.
   - Mobile app promotional banner with QR code preview.
 - **Smart Cart & Pricing Engine:**
@@ -92,7 +92,7 @@ cd "online food delivery website mini"
 PORT=5000
 NODE_ENV=development
 MONGODB_URI=mongodb://127.0.0.1:27017/food_spot
-JWT_SECRET=foodspot_super_secure_college_mini_project_secret_key_2026
+JWT_SECRET=altsfoodspot_super_secure_college_mini_project_secret_key_2026
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
 ORDER_PROGRESS_INTERVAL_SEC=30
@@ -131,9 +131,9 @@ npm run seed
 | Role | Email | Password | Permissions |
 | :--- | :--- | :--- | :--- |
 | **Super Admin** | `admin@gmail.com` | `Admin@123` | Full dashboard access, restaurant/dish CRUD, order status override |
-| **Customer 1** | `rahul@foodspot.com` | `User@123` | Ordering, saved addresses in Koramangala, active orders |
-| **Customer 2** | `priya@foodspot.com` | `User@123` | Ordering, Whitefield address |
-| **Customer 3** | `arjun@foodspot.com` | `User@123` | Ordering, HSR Layout address |
+| **Customer 1** | `rahul@altsfoodspot.com` | `User@123` | Ordering, saved addresses in Koramangala, active orders |
+| **Customer 2** | `priya@altsfoodspot.com` | `User@123` | Ordering, Whitefield address |
+| **Customer 3** | `arjun@altsfoodspot.com` | `User@123` | Ordering, HSR Layout address |
 
 > 💡 **Tip:** On the Login page (`/login`), click the **"1-Click Demo Login"** buttons to log in instantly without typing!
 

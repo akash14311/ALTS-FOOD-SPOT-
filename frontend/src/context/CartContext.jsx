@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
 
   const [cartState, setCartState] = useState(() => {
     try {
-      const saved = localStorage.getItem('foodspot_cart');
+      const saved = localStorage.getItem('altsfoodspot_cart') || localStorage.getItem('foodspot_cart');
       return saved ? JSON.parse(saved) : { items: [], restaurant: null, coupon: null };
     } catch {
       return { items: [], restaurant: null, coupon: null };
@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
 
   // Sync cart to localStorage
   useEffect(() => {
-    localStorage.setItem('foodspot_cart', JSON.stringify(cartState));
+    localStorage.setItem('altsfoodspot_cart', JSON.stringify(cartState));
   }, [cartState]);
 
   // Escape key to dismiss conflict popup
@@ -36,15 +36,22 @@ export const CartProvider = ({ children }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [restaurantConflict]);
 
-  // Add item to cart with single-restaurant enforcement
-  const addToCart = (foodItem, restaurantInfo) => {
+  // Helper to query quantity of an item currently in cart
+  const getItemQuantity = (foodId) => {
+    const found = cartState.items.find((item) => item._id === foodId);
+    return found ? found.quantity : 0;
+  };
+
+  // Add item to cart with single-restaurant enforcement and custom quantity selection
+  const addToCart = (foodItem, restaurantInfo, quantityToAdd = 1) => {
+    const qtyToAdd = Math.max(1, parseInt(quantityToAdd, 10) || 1);
     const { items, restaurant } = cartState;
 
     // Check if adding from a different restaurant
     if (restaurant && restaurant._id !== restaurantInfo._id && items.length > 0) {
       // Trigger confirmation dialog
       setRestaurantConflict({
-        incomingItem: foodItem,
+        incomingItem: { ...foodItem, requestedQty: qtyToAdd },
         incomingRestaurant: restaurantInfo,
         currentRestaurantName: restaurant.name,
       });
@@ -58,10 +65,10 @@ export const CartProvider = ({ children }) => {
 
       if (existingIndex > -1) {
         updatedItems = prev.items.map((item, idx) =>
-          idx === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
+          idx === existingIndex ? { ...item, quantity: item.quantity + qtyToAdd } : item
         );
       } else {
-        updatedItems = [...prev.items, { ...foodItem, quantity: 1 }];
+        updatedItems = [...prev.items, { ...foodItem, quantity: qtyToAdd }];
       }
 
       return {
@@ -71,7 +78,7 @@ export const CartProvider = ({ children }) => {
       };
     });
 
-    showToast(`Added ${foodItem.name} to cart`, 'success');
+    showToast(`Added ${qtyToAdd > 1 ? `${qtyToAdd}x ` : ''}${foodItem.name} to cart`, 'success');
     return true;
   };
 
@@ -79,9 +86,10 @@ export const CartProvider = ({ children }) => {
   const confirmSwitchRestaurant = () => {
     if (!restaurantConflict) return;
     const { incomingItem, incomingRestaurant } = restaurantConflict;
+    const initialQty = incomingItem.requestedQty || 1;
 
     setCartState({
-      items: [{ ...incomingItem, quantity: 1 }],
+      items: [{ ...incomingItem, quantity: initialQty }],
       restaurant: incomingRestaurant,
       coupon: null,
     });
@@ -200,6 +208,7 @@ export const CartProvider = ({ children }) => {
         coupon: cartState.coupon,
         addToCart,
         updateQuantity,
+        getItemQuantity,
         removeItem,
         clearCart,
         applyCoupon,

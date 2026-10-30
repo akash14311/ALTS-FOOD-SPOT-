@@ -9,6 +9,7 @@ import {
   mockPopularDishes as fallbackDishes,
   mockOffers,
   mockReviews,
+  getDishQuantity,
 } from '../services/mockData';
 import {
   FiSearch,
@@ -19,21 +20,36 @@ import {
   FiCopy,
   FiPlus,
   FiMinus,
+  FiActivity,
 } from 'react-icons/fi';
+import { HiSparkles } from 'react-icons/hi';
 import Hero3DStage from '../components/home/Hero3DStage';
 import FoodVisionStage from '../components/home/FoodVisionStage';
+import NutritionFactsModal from '../components/common/NutritionFactsModal';
+import { useAiAssistant } from '../context/AiAssistantContext';
 import '../styles/home.css';
 
 const Home = () => {
   const navigate = useNavigate();
   const { addToCart, updateQuantity, items: cartItems } = useCart();
   const { showToast } = useToast();
+  const { openAi } = useAiAssistant();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [restaurants, setRestaurants] = useState(fallbackRestaurants);
   const [popularDishes, setPopularDishes] = useState(fallbackDishes);
   const [offers, setOffers] = useState(mockOffers);
+  const [selectedQtyMap, setSelectedQtyMap] = useState({});
+  const [nutritionModalDish, setNutritionModalDish] = useState(null);
+
+  const handleSelectedQtyChange = (dishId, delta) => {
+    setSelectedQtyMap((prev) => {
+      const current = prev[dishId] || 1;
+      const next = Math.max(1, Math.min(20, current + delta));
+      return { ...prev, [dishId]: next };
+    });
+  };
 
   // Fetch real data on mount from backend
   useEffect(() => {
@@ -274,6 +290,81 @@ const Home = () => {
         </div>
       </div>
 
+      {/* AI Assistant Quick Interactive Launcher */}
+      <div className="container" style={{ marginTop: '1.25rem', marginBottom: '0.5rem' }}>
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(235, 23, 0, 0.07), rgba(255, 107, 0, 0.12))',
+          border: '1px solid rgba(235, 23, 0, 0.22)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '1rem 1.25rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #eb1700, #ff6b00)',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem',
+              boxShadow: '0 4px 12px rgba(235, 23, 0, 0.3)'
+            }}>
+              <HiSparkles />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                ALTS AI Food Concierge
+                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', background: 'var(--primary)', color: '#fff', borderRadius: '999px', fontWeight: 600 }}>Smart AI</span>
+              </div>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                Ask for custom macros, calorie limits, pure veg choices, or quick combos!
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <button
+              type="button"
+              className="btn btn-sm"
+              style={{ background: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', cursor: 'pointer' }}
+              onClick={() => openAi('Suggest high protein meals')}
+            >
+              💪 High Protein
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm"
+              style={{ background: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', cursor: 'pointer' }}
+              onClick={() => openAi('Find meals under ₹250')}
+            >
+              💰 Under ₹250
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm"
+              style={{ background: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', cursor: 'pointer' }}
+              onClick={() => openAi('Suggest pure vegetarian healthy dishes')}
+            >
+              🥗 Healthy Veg
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              style={{ borderRadius: '999px', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+              onClick={() => openAi()}
+            >
+              <HiSparkles /> Open Assistant
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* 3. Popular Cuisines Section */}
       <section className="section" style={{ paddingTop: '2rem' }}>
         <div className="container">
@@ -417,36 +508,84 @@ const Home = () => {
 
                     <h3 className="dish-title">{dish.name}</h3>
                     <div className="dish-restaurant">by {restaurantInfo.name}</div>
+                    <div style={{ marginTop: '0.35rem', marginBottom: '0.45rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <span className="dish-quantity-pill">
+                        📦 Qty: <strong>{dish.quantity || getDishQuantity(dish)}</strong>
+                      </span>
+                      <button
+                        type="button"
+                        className="btn-nutrition-facts"
+                        onClick={() => setNutritionModalDish(dish)}
+                        title={`View detailed macro nutrition facts for ${dish.name}`}
+                      >
+                        <FiActivity size={12} /> Nutrition Facts
+                      </button>
+                    </div>
                     <p className="dish-desc">{dish.description}</p>
 
-                    <div className="dish-footer">
+                    <div className="dish-footer" style={{ alignItems: 'flex-end', flexWrap: 'wrap', gap: '0.5rem' }}>
                       <div className="dish-price">₹{dish.price}</div>
 
                       {qty === 0 ? (
-                        <button
-                          className="btn btn-primary btn-sm"
-                          onClick={() => addToCart(dish, restaurantInfo)}
-                          id={`add-dish-btn-${dish._id}`}
-                        >
-                          <FiPlus /> Add
-                        </button>
+                        <div className="product-qty-selector">
+                          <div className="qty-picker">
+                            <button
+                              type="button"
+                              className="qty-picker-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSelectedQtyChange(dish._id, -1);
+                              }}
+                              disabled={(selectedQtyMap[dish._id] || 1) <= 1}
+                              aria-label="Decrease quantity"
+                              title="Decrease quantity to purchase"
+                            >
+                              <FiMinus size={11} />
+                            </button>
+                            <span className="qty-picker-val">{selectedQtyMap[dish._id] || 1}</span>
+                            <button
+                              type="button"
+                              className="qty-picker-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSelectedQtyChange(dish._id, 1);
+                              }}
+                              aria-label="Increase quantity"
+                              title="Increase quantity to purchase"
+                            >
+                              <FiPlus size={11} />
+                            </button>
+                          </div>
+
+                          <button
+                            className="btn btn-primary btn-sm btn-add-qty"
+                            onClick={() => addToCart(dish, restaurantInfo, selectedQtyMap[dish._id] || 1)}
+                            id={`add-dish-btn-${dish._id}`}
+                            title={`Add ${selectedQtyMap[dish._id] || 1} to cart`}
+                          >
+                            <FiPlus /> Add {(selectedQtyMap[dish._id] || 1) > 1 ? `(${selectedQtyMap[dish._id]})` : ''}
+                          </button>
+                        </div>
                       ) : (
-                        <div className="qty-stepper">
-                          <button
-                            className="qty-stepper-btn"
-                            onClick={() => updateQuantity(dish._id, qty - 1)}
-                            aria-label="Decrease quantity"
-                          >
-                            <FiMinus />
-                          </button>
-                          <span className="qty-val">{qty}</span>
-                          <button
-                            className="qty-stepper-btn"
-                            onClick={() => updateQuantity(dish._id, qty + 1)}
-                            aria-label="Increase quantity"
-                          >
-                            <FiPlus />
-                          </button>
+                        <div className="product-in-cart-wrap">
+                          <div className="qty-stepper">
+                            <button
+                              className="qty-stepper-btn"
+                              onClick={() => updateQuantity(dish._id, qty - 1)}
+                              aria-label="Decrease quantity"
+                            >
+                              <FiMinus />
+                            </button>
+                            <span className="qty-val">{qty}</span>
+                            <button
+                              className="qty-stepper-btn"
+                              onClick={() => updateQuantity(dish._id, qty + 1)}
+                              aria-label="Increase quantity"
+                            >
+                              <FiPlus />
+                            </button>
+                          </div>
+                          <span className="in-cart-subtext">✓ {qty} in cart</span>
                         </div>
                       )}
                     </div>
@@ -505,14 +644,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 7. How food spot Works */}
+      {/* 7. How ALTS FOOD spot Works */}
       <section className="section">
         <div className="container" style={{ textAlign: 'center' }}>
           <span style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
             Seamless & Effortless
           </span>
           <h2 className="section-title" style={{ marginTop: '0.35rem', marginBottom: '0.75rem' }}>
-            How food spot Works
+            How ALTS FOOD spot Works
           </h2>
           <p className="section-subtitle" style={{ maxWidth: '600px', margin: '0 auto' }}>
             From your appetite craving to the first piping hot bite in three simple steps.
@@ -593,7 +732,7 @@ const Home = () => {
               <span style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '0.9rem', textTransform: 'uppercase' }}>
                 On The Move?
               </span>
-              <h2 className="app-banner-title">food spot in Your Pocket</h2>
+              <h2 className="app-banner-title">ALTS FOOD spot in Your Pocket</h2>
               <p className="app-banner-desc">
                 Download our award-winning food delivery app to enjoy exclusive app-only discounts, live delivery push notifications, and fast one-tap reordering.
               </p>
@@ -656,6 +795,13 @@ const Home = () => {
           </div>
         </div>
       </section>
+      {/* Macro Nutrition Facts Modal */}
+      <NutritionFactsModal
+        isOpen={Boolean(nutritionModalDish)}
+        onClose={() => setNutritionModalDish(null)}
+        dish={nutritionModalDish}
+        restaurant={restaurants.find((r) => r._id === nutritionModalDish?.restaurant) || restaurants[0]}
+      />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 // Cryptographic Pepper for Salting One-Time Passwords
-const OTP_PEPPER = process.env.OTP_PEPPER || 'foodspot_secure_cryptographic_otp_pepper_salt_2026!';
+const OTP_PEPPER = process.env.OTP_PEPPER || 'altsfoodspot_secure_cryptographic_otp_pepper_salt_2026!';
 const OTP_TTL_MS = 5 * 60 * 1000;          // 5 Minutes validity
 const COOLDOWN_MS = 60 * 1000;             // 60-second resend cooldown
 const MAX_VERIFY_ATTEMPTS = 5;             // Max verification failures before key purge
@@ -261,7 +261,7 @@ function verifyOtp(identifier, submittedOtp) {
 }
 
 /**
- * Professional HTML Email Template for food spot OTP Verification
+ * Professional HTML Email Template for ALTS FOOD spot OTP Verification
  */
 function buildOtpEmailTemplate(otp, identifier) {
   return `
@@ -270,7 +270,7 @@ function buildOtpEmailTemplate(otp, identifier) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your food spot Verification Code</title>
+  <title>Your ALTS FOOD spot Verification Code</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f7f9fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1f2937;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f7f9fa; padding: 40px 10px;">
@@ -282,7 +282,7 @@ function buildOtpEmailTemplate(otp, identifier) {
           <tr>
             <td style="background: linear-gradient(135deg, #FF4D2E 0%, #FF8A00 100%); padding: 32px 30px; text-align: center;">
               <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">
-                🍔 food<span style="color: #FFE600;">spot</span>
+                🍔 ALTS FOOD<span style="color: #FFE600;"> spot</span>
               </h1>
               <p style="margin: 6px 0 0; color: rgba(255,255,255,0.92); font-size: 13px; font-weight: 500; letter-spacing: 0.3px;">
                 Your cravings. Our mission.
@@ -322,7 +322,7 @@ function buildOtpEmailTemplate(otp, identifier) {
               </div>
 
               <p style="margin: 0; font-size: 12px; color: #9ca3af; line-height: 1.5;">
-                If you did not request this verification code, please ignore this email or contact food spot support immediately.
+                If you did not request this verification code, please ignore this email or contact ALTS FOOD spot support immediately.
               </p>
             </td>
           </tr>
@@ -331,7 +331,7 @@ function buildOtpEmailTemplate(otp, identifier) {
           <tr>
             <td style="background-color: #fafafa; border-top: 1px solid #f3f4f6; padding: 20px 32px; text-align: center;">
               <p style="margin: 0; font-size: 11px; color: #9ca3af;">
-                &copy; ${new Date().getFullYear()} food spot Inc. All rights reserved.<br />
+                &copy; ${new Date().getFullYear()} ALTS FOOD spot Inc. All rights reserved.<br />
                 Koramangala, Bengaluru, Karnataka, India
               </p>
             </td>
@@ -425,13 +425,13 @@ async function sendEmailOtp(email, otp) {
     }
 
     const { transporter, type } = transportObj;
-    const senderAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || '"food spot Security" <auth@foodspot.com>';
+    const senderAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || '"ALTS FOOD spot Security" <auth@altsfoodspot.com>';
 
     const mailOptions = {
       from: senderAddress,
       to: email,
-      subject: `Your food spot verification code: ${otp}`,
-      text: `Your food spot verification code is: ${otp}. Valid for 5 minutes. Do not share this code with anyone.`,
+      subject: `Your ALTS FOOD spot verification code: ${otp}`,
+      text: `Your ALTS FOOD spot verification code is: ${otp}. Valid for 5 minutes. Do not share this code with anyone.`,
       html: buildOtpEmailTemplate(otp, email),
     };
 
@@ -445,7 +445,7 @@ async function sendEmailOtp(email, otp) {
     // Direct Webmail shortcut for user device convenience
     const domain = (email.split('@')[1] || '').toLowerCase();
     if (domain.includes('gmail')) {
-      result.webmailUrl = 'https://mail.google.com/mail/u/0/#search/food+spot';
+      result.webmailUrl = 'https://mail.google.com/mail/u/0/#search/ALTS+FOOD+spot';
     } else if (domain.includes('outlook') || domain.includes('hotmail')) {
       result.webmailUrl = 'https://outlook.live.com/mail/0/';
     } else if (domain.includes('yahoo')) {
@@ -470,8 +470,8 @@ async function sendSmsOtp(phone, otp) {
     recipient: phone,
     status: 'sent',
     provider: 'simulated',
-    sender: 'VM-FOODSP',
-    text: `food spot: Your verification code is ${otp}. Valid for 5 minutes. Do not share with anyone.`,
+    sender: 'VM-ALTSFS',
+    text: `ALTS FOOD spot: Your verification code is ${otp}. Valid for 5 minutes. Do not share with anyone.`,
     otp,
     message: '',
   };
@@ -556,7 +556,7 @@ async function sendSmsOtp(phone, otp) {
 async function dispatchOtp(identifier, type, otp) {
   // Always log prominent OTP in terminal console for testing & viva presentation
   console.log('\n======================================================');
-  console.log('⚡ [FOOD SPOT SECURE OTP DISPATCH]');
+  console.log('⚡ [ALTS FOOD SPOT SECURE OTP DISPATCH]');
   console.log(`Channel:     ${type === 'phone' ? '📱 MOBILE SMS' : '📧 EMAIL INBOX'}`);
   console.log(`Recipient:   ${identifier}`);
   console.log(`🔑 OTP Code:    ${otp}`);
@@ -569,7 +569,7 @@ async function dispatchOtp(identifier, type, otp) {
     const path = require('path');
     fs.writeFileSync(
       path.join(__dirname, '..', 'latest_otp.txt'),
-      `======================================================\nFOOD SPOT LATEST OTP\nGenerated: ${new Date().toLocaleTimeString()}\nRecipient: ${identifier}\nChannel:   ${type}\nOTP Code:  ${otp}\n======================================================\n`
+      `======================================================\nALTS FOOD SPOT LATEST OTP\nGenerated: ${new Date().toLocaleTimeString()}\nRecipient: ${identifier}\nChannel:   ${type}\nOTP Code:  ${otp}\n======================================================\n`
     );
   } catch (_) {}
 

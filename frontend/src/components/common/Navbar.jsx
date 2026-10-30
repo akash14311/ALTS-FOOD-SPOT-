@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useAiAssistant } from '../../context/AiAssistantContext';
 import {
   FiShoppingBag,
   FiUser,
@@ -15,8 +16,9 @@ import {
   FiShield,
   FiList,
   FiSun,
-  FiMoon
+  FiMoon,
 } from 'react-icons/fi';
+import { HiSparkles } from 'react-icons/hi';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import '../../styles/navbar.css';
 
@@ -24,6 +26,7 @@ const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { totalItemsCount, total } = useCart();
   const { isDark, toggleTheme } = useTheme();
+  const { openAi } = useAiAssistant();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -48,7 +51,7 @@ const Navbar = () => {
             <IoFastFoodOutline />
           </div>
           <div className="brand-name">
-            <div className="brand-title">food<span>spot</span></div>
+            <div className="brand-title">ALTS FOOD<span> spot</span></div>
             <span className="brand-tagline">Your cravings. Our mission.</span>
           </div>
         </Link>
@@ -81,6 +84,20 @@ const Navbar = () => {
 
         {/* Right Nav Actions */}
         <div className="nav-actions">
+          {/* AI Assistant Option Button */}
+          <button
+            type="button"
+            className="nav-ai-btn"
+            onClick={() => {
+              closeMenu();
+              openAi();
+            }}
+            id="navbar-ai-assistant-btn"
+            title="Ask ALTS AI Food Concierge for personalized recommendations"
+          >
+            <HiSparkles /> AI Assistant
+          </button>
+
           {/* Theme Switcher Toggle */}
           <button
             type="button"
@@ -223,6 +240,26 @@ const Navbar = () => {
           <NavLink to="/search" className="mobile-nav-link" onClick={closeMenu}>
             <FiSearch /> Search Dishes & Restaurants
           </NavLink>
+
+          <button
+            type="button"
+            className="mobile-nav-link"
+            onClick={() => { closeMenu(); openAi(); }}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              background: 'none',
+              border: 'none',
+              color: 'var(--primary)',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              cursor: 'pointer'
+            }}
+          >
+            <HiSparkles /> Ask AI Food Assistant
+          </button>
 
           {isAuthenticated ? (
             <>

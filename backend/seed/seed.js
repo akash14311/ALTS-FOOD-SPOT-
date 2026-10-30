@@ -45,7 +45,7 @@ const seedDatabase = async (exitOnComplete = true) => {
 
     const rahul = await User.create({
       name: 'Rahul Sharma',
-      email: 'rahul@foodspot.com',
+      email: 'rahul@altsfoodspot.com',
       mobile: '9888877771',
       passwordHash: userPassword,
       role: 'user',
@@ -54,7 +54,7 @@ const seedDatabase = async (exitOnComplete = true) => {
 
     const priya = await User.create({
       name: 'Priya Patel',
-      email: 'priya@foodspot.com',
+      email: 'priya@altsfoodspot.com',
       mobile: '9888877772',
       passwordHash: userPassword,
       role: 'user',
@@ -63,7 +63,7 @@ const seedDatabase = async (exitOnComplete = true) => {
 
     const arjun = await User.create({
       name: 'Arjun Verma',
-      email: 'arjun@foodspot.com',
+      email: 'arjun@altsfoodspot.com',
       mobile: '9888877773',
       passwordHash: userPassword,
       role: 'user',
@@ -416,8 +416,54 @@ const seedDatabase = async (exitOnComplete = true) => {
       createdRestaurants.push(restaurant);
 
       for (const dish of dishes) {
+        let qtyStr = dish.quantity;
+        if (!qtyStr) {
+          const nm = (dish.name || '').toLowerCase();
+          const ct = (dish.category || '').toLowerCase();
+          if (nm.includes('biryani') || ct.includes('biryani')) qtyStr = '1 Handi (500g • Serves 1-2)';
+          else if (nm.includes('pizza') || ct.includes('pizza')) qtyStr = '1 Pizza (10" Medium • 6 Slices)';
+          else if (nm.includes('burger') || ct.includes('burger')) qtyStr = '1 Burger (240g) + Crispy Dip';
+          else if (nm.includes('naan') || nm.includes('roti') || nm.includes('bread')) qtyStr = '2 Pcs Freshly Baked';
+          else if (nm.includes('dosa') || nm.includes('idli')) qtyStr = '1 Full Plate (Serves 1)';
+          else if (nm.includes('noodle') || nm.includes('rice') || ct.includes('chinese')) qtyStr = '1 Wok Bowl (450g • Serves 1-2)';
+          else if (nm.includes('dumpling') || nm.includes('dim sum') || nm.includes('momo')) qtyStr = '6 Steamed Pcs with Sauce';
+          else if (nm.includes('cake') || nm.includes('jamun') || ct.includes('dessert')) qtyStr = '1 Serving (Standard Portion)';
+          else if (nm.includes('shake') || nm.includes('lassi') || ct.includes('beverage')) qtyStr = '1 Glass (350ml Chilled)';
+          else if (nm.includes('paneer') || nm.includes('chicken') || nm.includes('curry') || nm.includes('dal')) qtyStr = '1 Handi (400g • Serves 1-2)';
+          else qtyStr = '1 Standard Portion (Serves 1-2)';
+        }
+
+        let nutritionObj = dish.nutrition;
+        if (!nutritionObj) {
+          const nm = (dish.name || '').toLowerCase();
+          const ct = (dish.category || '').toLowerCase();
+          if (nm.includes('biryani') || ct.includes('biryani')) {
+            nutritionObj = { calories: 680, protein: 32, carbs: 78, fat: 26, fiber: 6, sugar: 4, sodium: 580 };
+          } else if (nm.includes('pizza') || ct.includes('pizza')) {
+            nutritionObj = { calories: 720, protein: 28, carbs: 84, fat: 28, fiber: 5, sugar: 7, sodium: 720 };
+          } else if (nm.includes('burger') || ct.includes('burger')) {
+            nutritionObj = { calories: 590, protein: 26, carbs: 54, fat: 29, fiber: 4, sugar: 8, sodium: 650 };
+          } else if (nm.includes('dosa') || nm.includes('idli')) {
+            nutritionObj = { calories: 360, protein: 12, carbs: 58, fat: 9, fiber: 7, sugar: 3, sodium: 420 };
+          } else if (nm.includes('noodle') || nm.includes('rice') || ct.includes('chinese')) {
+            nutritionObj = { calories: 510, protein: 16, carbs: 72, fat: 18, fiber: 5, sugar: 5, sodium: 640 };
+          } else if (nm.includes('cake') || nm.includes('jamun') || ct.includes('dessert')) {
+            nutritionObj = { calories: 380, protein: 6, carbs: 52, fat: 17, fiber: 2, sugar: 34, sodium: 180 };
+          } else if (nm.includes('shake') || nm.includes('lassi') || ct.includes('beverage')) {
+            nutritionObj = { calories: 240, protein: 8, carbs: 36, fat: 7, fiber: 1, sugar: 28, sodium: 110 };
+          } else if (nm.includes('paneer') || nm.includes('dal')) {
+            nutritionObj = { calories: 440, protein: 20, carbs: 32, fat: 24, fiber: 8, sugar: 5, sodium: 510 };
+          } else if (dish.isVeg) {
+            nutritionObj = { calories: 420, protein: 15, carbs: 54, fat: 16, fiber: 7, sugar: 5, sodium: 460 };
+          } else {
+            nutritionObj = { calories: 540, protein: 34, carbs: 38, fat: 22, fiber: 4, sugar: 4, sodium: 560 };
+          }
+        }
+
         const createdFood = await Food.create({
           ...dish,
+          quantity: qtyStr,
+          nutrition: nutritionObj,
           restaurant: restaurant._id,
         });
         allDishesCreated.push(createdFood);
@@ -554,7 +600,7 @@ const seedDatabase = async (exitOnComplete = true) => {
     console.log('\n========================================================');
     console.log('🎉 DATABASE SEEDING COMPLETED SUCCESSFULLY!');
     console.log('========================================================');
-    console.log('Brand: food spot ("Your cravings. Our mission.")');
+    console.log('Brand: ALTS FOOD spot ("Your cravings. Our mission.")');
     console.log('--------------------------------------------------------');
     console.log('🔑 PRE-SEEDED CREDENTIALS FOR TESTING & VIVA:');
     console.log('--------------------------------------------------------');
@@ -564,16 +610,16 @@ const seedDatabase = async (exitOnComplete = true) => {
     console.log('   Role:     admin');
     console.log('');
     console.log('2. Customer 1 (Rahul):');
-    console.log('   Email:    rahul@foodspot.com');
+    console.log('   Email:    rahul@altsfoodspot.com');
     console.log('   Password: User@123');
     console.log('   Role:     user');
     console.log('');
     console.log('3. Customer 2 (Priya):');
-    console.log('   Email:    priya@foodspot.com');
+    console.log('   Email:    priya@altsfoodspot.com');
     console.log('   Password: User@123');
     console.log('');
     console.log('4. Customer 3 (Arjun):');
-    console.log('   Email:    arjun@foodspot.com');
+    console.log('   Email:    arjun@altsfoodspot.com');
     console.log('   Password: User@123');
     console.log('--------------------------------------------------------');
     console.log('🏷️ AVAILABLE COUPONS:');

@@ -197,7 +197,7 @@ export const mockReviews = [
     city: 'Koramangala, Bangalore',
     rating: 5,
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
-    review: 'food spot is a lifesaver! The live order tracking is so smooth and accurate. My Biryani arrived piping hot in just 25 minutes!'
+    review: 'ALTS FOOD spot is a lifesaver! The live order tracking is so smooth and accurate. My Biryani arrived piping hot in just 25 minutes!'
   },
   {
     name: 'Priya Patel',
@@ -214,3 +214,200 @@ export const mockReviews = [
     review: 'The single-restaurant cart check and status updates give it such a professional feel. Truly feels like Swiggy and Zomato combined.'
   }
 ];
+
+/**
+ * Helper to compute or fallback to realistic dish quantity / portion sizes
+ */
+export const getDishQuantity = (dish) => {
+  if (dish?.quantity) return dish.quantity;
+  const name = (dish?.name || '').toLowerCase();
+  const cat = (dish?.category || '').toLowerCase();
+  if (name.includes('biryani') || cat.includes('biryani')) return '1 Handi (500g • Serves 1-2)';
+  if (name.includes('pizza') || cat.includes('pizza')) return '1 Pizza (10" Medium • 6 Slices)';
+  if (name.includes('burger') || cat.includes('burger')) return '1 Burger (240g) + Crispy Dip';
+  if (name.includes('naan') || name.includes('roti') || name.includes('bread') || name.includes('paratha')) return '2 Pcs Freshly Baked';
+  if (name.includes('dosa') || name.includes('idli')) return '1 Full Plate (Serves 1)';
+  if (name.includes('noodle') || name.includes('fried rice') || cat.includes('chinese')) return '1 Wok Bowl (450g • Serves 1-2)';
+  if (name.includes('dumpling') || name.includes('dim sum') || name.includes('momo')) return '6 Steamed Pcs with Sauce';
+  if (name.includes('cake') || name.includes('jamun') || name.includes('dessert') || cat.includes('dessert')) return '1 Serving (Standard Portion)';
+  if (name.includes('shake') || name.includes('lassi') || name.includes('juice') || cat.includes('beverage') || name.includes('cola')) return '1 Glass (350ml Chilled)';
+  if (name.includes('paneer') || name.includes('chicken') || name.includes('curry') || name.includes('dal') || name.includes('gravy')) return '1 Handi (400g • Serves 1-2)';
+  return '1 Standard Portion (Serves 1-2)';
+};
+
+/**
+ * Computes comprehensive macro nutrition facts and health insights for any food dish
+ */
+export const getDishNutrition = (dish) => {
+  const custom = dish?.nutrition;
+  const name = (dish?.name || '').toLowerCase();
+  const cat = (dish?.category || '').toLowerCase();
+  const isVeg = Boolean(dish?.isVeg);
+
+  let base = {
+    calories: 450,
+    protein: isVeg ? 16 : 30,
+    carbs: 52,
+    fat: 18,
+    fiber: 5,
+    sugar: 5,
+    sodium: 480,
+    servingSize: getDishQuantity(dish),
+    highlights: isVeg ? ['100% Vegetarian', 'Fiber Rich'] : ['High Protein', 'Rich in Iron'],
+    allergens: isVeg ? ['Contains Dairy'] : ['Contains Poultry'],
+  };
+
+  if (name.includes('biryani') || cat.includes('biryani')) {
+    base = {
+      calories: isVeg ? 580 : 680,
+      protein: isVeg ? 18 : 34,
+      carbs: 82,
+      fat: isVeg ? 22 : 26,
+      fiber: 6,
+      sugar: 4,
+      sodium: 590,
+      servingSize: '1 Handi (~500g)',
+      highlights: [isVeg ? 'Traditional Veg Handi' : 'High Quality Protein', 'Aromatic Spices', 'Slow Cooked Dum'],
+      allergens: isVeg ? ['Contains Dairy (Ghee)', 'Cashews'] : ['Contains Poultry', 'Dairy (Ghee)'],
+    };
+  } else if (name.includes('pizza') || cat.includes('pizza')) {
+    base = {
+      calories: isVeg ? 680 : 760,
+      protein: isVeg ? 24 : 32,
+      carbs: 86,
+      fat: 26,
+      fiber: 5,
+      sugar: 7,
+      sodium: 740,
+      servingSize: '1 Pizza (10" • 6 Slices)',
+      highlights: ['Artisanal Crust', 'Real Mozzarella', 'Oven Baked'],
+      allergens: ['Contains Gluten (Wheat)', 'Contains Dairy (Cheese)'],
+    };
+  } else if (name.includes('burger') || cat.includes('burger')) {
+    base = {
+      calories: isVeg ? 520 : 620,
+      protein: isVeg ? 18 : 31,
+      carbs: 56,
+      fat: 27,
+      fiber: 4,
+      sugar: 8,
+      sodium: 680,
+      servingSize: '1 Burger (240g)',
+      highlights: ['Grilled Patty', 'Fresh Brioche', 'Crispy Greens'],
+      allergens: ['Contains Gluten', 'Contains Dairy', 'Sesame Seeds'],
+    };
+  } else if (name.includes('dosa') || name.includes('idli')) {
+    base = {
+      calories: 340,
+      protein: 11,
+      carbs: 58,
+      fat: 8,
+      fiber: 7,
+      sugar: 3,
+      sodium: 410,
+      servingSize: '1 Full Plate (~350g)',
+      highlights: ['Fermented Batter', 'Gut Friendly', 'Low Fat', 'Pure Veg'],
+      allergens: ['Mustard Seeds (in Sambar)', 'Coconut (in Chutney)'],
+    };
+  } else if (name.includes('noodle') || name.includes('fried rice') || cat.includes('chinese')) {
+    base = {
+      calories: 520,
+      protein: isVeg ? 14 : 26,
+      carbs: 76,
+      fat: 18,
+      fiber: 5,
+      sugar: 6,
+      sodium: 690,
+      servingSize: '1 Wok Bowl (~450g)',
+      highlights: ['Wok Tossed', 'Fresh Vegetables', 'Rich in Flavor'],
+      allergens: ['Contains Gluten', 'Contains Soy'],
+    };
+  } else if (name.includes('tikka') || name.includes('kebab') || name.includes('grilled')) {
+    base = {
+      calories: isVeg ? 390 : 480,
+      protein: isVeg ? 22 : 42,
+      carbs: 16,
+      fat: 18,
+      fiber: 4,
+      sugar: 4,
+      sodium: 520,
+      servingSize: '1 Sizzler Plate (6 Pcs)',
+      highlights: ['Clay Tandoor Grilled', 'Lean Protein', 'Low Carb', 'Keto Friendly'],
+      allergens: ['Contains Dairy (Curd marinade)'],
+    };
+  } else if (name.includes('paneer') || name.includes('dal') || name.includes('curry')) {
+    base = {
+      calories: isVeg ? 430 : 540,
+      protein: isVeg ? 21 : 36,
+      carbs: 34,
+      fat: 23,
+      fiber: 7,
+      sugar: 5,
+      sodium: 520,
+      servingSize: '1 Handi (~400g)',
+      highlights: ['Rich Mughlai Gravy', 'High Calcium & Protein', 'Slow Simmered'],
+      allergens: ['Contains Dairy (Cream, Butter, Paneer)'],
+    };
+  } else if (name.includes('shake') || name.includes('lassi') || cat.includes('beverage')) {
+    base = {
+      calories: 260,
+      protein: 9,
+      carbs: 38,
+      fat: 8,
+      fiber: 2,
+      sugar: 29,
+      sodium: 120,
+      servingSize: '1 Glass (350ml)',
+      highlights: ['Chilled Fresh', 'Probiotic Rich', 'Refreshing'],
+      allergens: ['Contains Dairy (Milk/Yogurt)'],
+    };
+  } else if (name.includes('cake') || name.includes('jamun') || cat.includes('dessert')) {
+    base = {
+      calories: 390,
+      protein: 6,
+      carbs: 54,
+      fat: 18,
+      fiber: 2,
+      sugar: 36,
+      sodium: 160,
+      servingSize: '1 Serving Portion',
+      highlights: ['Artisanal Sweet Treat', 'Warm & Indulgent'],
+      allergens: ['Contains Dairy', 'Contains Gluten'],
+    };
+  }
+
+  // Override with any custom database fields if present
+  if (custom && typeof custom === 'object') {
+    if (custom.calories) base.calories = custom.calories;
+    if (custom.protein) base.protein = custom.protein;
+    if (custom.carbs) base.carbs = custom.carbs;
+    if (custom.fat) base.fat = custom.fat;
+    if (custom.fiber) base.fiber = custom.fiber;
+    if (custom.sugar) base.sugar = custom.sugar;
+    if (custom.sodium) base.sodium = custom.sodium;
+  }
+
+  // Calorie math: Protein 4 kcal/g, Carbs 4 kcal/g, Fat 9 kcal/g
+  const proteinKcal = base.protein * 4;
+  const carbsKcal = base.carbs * 4;
+  const fatKcal = base.fat * 9;
+  const calculatedTotalKcal = proteinKcal + carbsKcal + fatKcal || base.calories;
+
+  base.macroPct = {
+    protein: Math.round((proteinKcal / calculatedTotalKcal) * 100),
+    carbs: Math.round((carbsKcal / calculatedTotalKcal) * 100),
+    fat: Math.round((fatKcal / calculatedTotalKcal) * 100),
+  };
+
+  // % Daily Value (based on 2000 kcal diet)
+  base.dailyValue = {
+    calories: Math.round((base.calories / 2000) * 100),
+    protein: Math.round((base.protein / 50) * 100),
+    carbs: Math.round((base.carbs / 275) * 100),
+    fat: Math.round((base.fat / 78) * 100),
+    fiber: Math.round((base.fiber / 28) * 100),
+    sodium: Math.round((base.sodium / 2300) * 100),
+  };
+
+  return base;
+};

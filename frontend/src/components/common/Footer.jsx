@@ -13,7 +13,7 @@ const Footer = () => {
           <div>
             <div className="footer-brand-title">
               <IoFastFoodOutline style={{ color: 'var(--primary)', fontSize: '1.75rem' }} />
-              food<span>spot</span>
+              ALTS FOOD<span> spot</span>
             </div>
             <p className="footer-desc">
               Your cravings. Our mission. Delivering hot, mouthwatering meals from top local kitchens straight to your doorstep with lightning speed.
@@ -69,7 +69,7 @@ const Footer = () => {
 
         {/* Footer Bottom Bar */}
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} food spot Inc. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} ALTS FOOD spot Inc. All rights reserved.</p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             Built with <FiHeart style={{ color: 'var(--primary)' }} /> for foodies everywhere.
           </p>

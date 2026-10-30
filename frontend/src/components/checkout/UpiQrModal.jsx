@@ -18,7 +18,7 @@ export const UPI_PROVIDERS = [
     id: 'all',
     name: 'All UPI Apps',
     shortName: 'Any UPI',
-    vpa: 'foodspot@icici',
+    vpa: 'altsfoodspot@icici',
     themeColor: '#ff4d2e',
     badgeText: 'UPI',
     instruction: 'Scan using any UPI App (Google Pay, PhonePe, Paytm, BHIM, CRED)'
@@ -27,7 +27,7 @@ export const UPI_PROVIDERS = [
     id: 'gpay',
     name: 'Google Pay',
     shortName: 'GPay',
-    vpa: 'foodspot.gpay@okaxis',
+    vpa: 'altsfoodspot.gpay@okaxis',
     themeColor: '#1a73e8',
     badgeText: 'GPay',
     instruction: 'Scan with Google Pay App to make payment'
@@ -36,7 +36,7 @@ export const UPI_PROVIDERS = [
     id: 'phonepe',
     name: 'PhonePe',
     shortName: 'PhonePe',
-    vpa: 'foodspot.phonepe@ybl',
+    vpa: 'altsfoodspot.phonepe@ybl',
     themeColor: '#5f259f',
     badgeText: 'PhonePe',
     instruction: 'Scan with PhonePe App to make payment'
@@ -45,7 +45,7 @@ export const UPI_PROVIDERS = [
     id: 'paytm',
     name: 'Paytm UPI',
     shortName: 'Paytm',
-    vpa: 'foodspot.paytm@paytm',
+    vpa: 'altsfoodspot.paytm@paytm',
     themeColor: '#00b9f1',
     badgeText: 'Paytm',
     instruction: 'Scan with Paytm App to make payment'
@@ -54,7 +54,7 @@ export const UPI_PROVIDERS = [
     id: 'bhim',
     name: 'BHIM UPI',
     shortName: 'BHIM',
-    vpa: 'foodspot.bhim@upi',
+    vpa: 'altsfoodspot.bhim@upi',
     themeColor: '#f26522',
     badgeText: 'BHIM',
     instruction: 'Scan with BHIM App to make payment'
@@ -63,7 +63,7 @@ export const UPI_PROVIDERS = [
     id: 'cred',
     name: 'CRED UPI',
     shortName: 'CRED',
-    vpa: 'foodspot.cred@axis',
+    vpa: 'altsfoodspot.cred@axis',
     themeColor: '#0f172a',
     badgeText: 'CRED',
     instruction: 'Scan with CRED App to make payment'
@@ -98,7 +98,7 @@ const UpiQrModal = ({
   isOpen,
   onClose,
   total,
-  restaurantName = 'food spot Delivery',
+  restaurantName = 'ALTS FOOD spot Delivery',
   onPaymentSuccess,
   isProcessing = false,
   initialApp = 'all'
@@ -115,18 +115,18 @@ const UpiQrModal = ({
   // Standard official UPI Deep-Link Intent URI customized per selected app
   const upiIntentUri = `upi://pay?pa=${encodeURIComponent(
     activeProvider.vpa
-  )}&pn=${encodeURIComponent('food spot')}&am=${Number(total).toFixed(
+  )}&pn=${encodeURIComponent('ALTS FOOD spot')}&am=${Number(total).toFixed(
     2
-  )}&cu=INR&tn=${encodeURIComponent(`food spot - ${activeProvider.name}`)}`;
+  )}&cu=INR&tn=${encodeURIComponent(`ALTS FOOD spot - ${activeProvider.name}`)}`;
 
   // Generate real, scan-compliant QR Code for the selected provider
   const generateQrForProvider = async (provider) => {
     try {
       const uri = `upi://pay?pa=${encodeURIComponent(
         provider.vpa
-      )}&pn=${encodeURIComponent('food spot')}&am=${Number(total).toFixed(
+      )}&pn=${encodeURIComponent('ALTS FOOD spot')}&am=${Number(total).toFixed(
         2
-      )}&cu=INR&tn=${encodeURIComponent(`food spot - ${provider.name}`)}`;
+      )}&cu=INR&tn=${encodeURIComponent(`ALTS FOOD spot - ${provider.name}`)}`;
 
       const url = await QRCode.toDataURL(uri, {
         width: 320,

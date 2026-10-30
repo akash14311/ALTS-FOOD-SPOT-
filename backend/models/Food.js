@@ -33,6 +33,20 @@ const foodSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
+    quantity: {
+      type: String,
+      default: '1 Portion (Serves 1-2)',
+      trim: true,
+    },
+    nutrition: {
+      calories: { type: Number, default: 450 },
+      protein: { type: Number, default: 18 },
+      carbs: { type: Number, default: 52 },
+      fat: { type: Number, default: 16 },
+      fiber: { type: Number, default: 5 },
+      sugar: { type: Number, default: 6 },
+      sodium: { type: Number, default: 450 },
+    },
     isVeg: {
       type: Boolean,
       default: false,

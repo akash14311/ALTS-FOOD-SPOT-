@@ -20,6 +20,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -43,7 +44,7 @@ app.get('/api/health', async (req, res) => {
   const mongoose = require('mongoose');
   res.json({
     status: 'ok',
-    brand: 'food spot',
+    brand: 'ALTS FOOD spot',
     tagline: 'Your cravings. Our mission.',
     time: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
@@ -67,6 +68,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/api/admin/seed-now', async (req, res) => {
   try {
@@ -101,7 +103,7 @@ const startServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`\n======================================================`);
-    console.log(`🚀 food spot REST API Server running on port ${PORT}`);
+    console.log(`🚀 ALTS FOOD spot REST API Server running on port ${PORT}`);
     console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
     console.log(`======================================================\n`);
 

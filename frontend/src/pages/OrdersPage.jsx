@@ -52,7 +52,8 @@ const OrdersPage = () => {
           image: item.image,
           isVeg: item.isVeg,
         },
-        order.restaurant
+        order.restaurant,
+        item.quantity || 1
       );
     });
 

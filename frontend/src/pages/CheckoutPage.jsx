@@ -17,6 +17,7 @@ import {
   FiArrowLeft,
 } from 'react-icons/fi';
 import UpiQrModal, { UPI_PROVIDERS } from '../components/checkout/UpiQrModal';
+import { getDishQuantity } from '../services/mockData';
 import '../styles/checkout.css';
 import '../styles/upiPayment.css';
 
@@ -99,9 +100,9 @@ const CheckoutPage = () => {
   useEffect(() => {
     const vpa = activeProvider.vpa;
     const upiUri = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(
-      'food spot'
+      'ALTS FOOD spot'
     )}&am=${Number(total).toFixed(2)}&cu=INR&tn=${encodeURIComponent(
-      `food spot - ${activeProvider.name}`
+      `ALTS FOOD spot - ${activeProvider.name}`
     )}`;
 
     QRCode.toDataURL(upiUri, {
@@ -672,11 +673,14 @@ const CheckoutPage = () => {
               {/* Items Snapshot */}
               <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1.25rem', paddingRight: '4px' }}>
                 {items.map((i) => (
-                  <div key={i._id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', marginBottom: '0.5rem' }}>
-                    <span style={{ color: 'var(--text-main)' }}>
-                      {i.quantity}x {i.name}
-                    </span>
-                    <span style={{ fontWeight: '600' }}>₹{i.price * i.quantity}</span>
+                  <div key={i._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.88rem', marginBottom: '0.6rem' }}>
+                    <div>
+                      <div style={{ color: 'var(--text-main)', fontWeight: '600' }}>{i.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        Quantity: <strong style={{ color: 'var(--primary)' }}>{i.quantity}</strong> ({getDishQuantity(i)}) • ₹{i.price} each
+                      </div>
+                    </div>
+                    <span style={{ fontWeight: '700' }}>₹{i.price * i.quantity}</span>
                   </div>
                 ))}
               </div>
@@ -755,7 +759,7 @@ const CheckoutPage = () => {
         isOpen={showUpiModal}
         onClose={() => setShowUpiModal(false)}
         total={total}
-        restaurantName={restaurant?.name || 'food spot'}
+        restaurantName={restaurant?.name || 'ALTS FOOD spot'}
         onPaymentSuccess={() => handlePlaceOrder(true)}
         isProcessing={isProcessing}
         initialApp={selectedAppId}

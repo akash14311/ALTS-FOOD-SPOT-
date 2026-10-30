@@ -16,7 +16,7 @@ const {
 const generateToken = (userId) => {
   return jwt.sign(
     { id: userId },
-    process.env.JWT_SECRET || 'foodspot_super_secure_college_mini_project_secret_key_2026',
+    process.env.JWT_SECRET || 'altsfoodspot_super_secure_college_mini_project_secret_key_2026',
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
 };
@@ -55,7 +55,7 @@ const register = async (req, res, next) => {
 
     return sendSuccess(
       res,
-      'Registration successful! Welcome to food spot.',
+      'Registration successful! Welcome to ALTS FOOD spot.',
       {
         token,
         user: {
@@ -232,7 +232,7 @@ const verifyOtp = async (req, res, next) => {
       }
 
       if (!derivedEmail) {
-        derivedEmail = `user_${identifier.replace(/\D/g, '').slice(-10)}@foodspot.com`;
+        derivedEmail = `user_${identifier.replace(/\D/g, '').slice(-10)}@altsfoodspot.com`;
       }
       if (!derivedMobile) {
         derivedMobile = '9888877771';
@@ -257,7 +257,7 @@ const verifyOtp = async (req, res, next) => {
 
     return sendSuccess(
       res,
-      isNewUser ? 'Account created successfully! Welcome to food spot.' : 'Logged in successfully!',
+      isNewUser ? 'Account created successfully! Welcome to ALTS FOOD spot.' : 'Logged in successfully!',
       {
         token,
         isNewUser,

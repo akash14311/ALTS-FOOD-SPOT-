@@ -6,7 +6,7 @@ export const ThemeProvider = ({ children }) => {
   // Initialize theme from localStorage or system preference, default to 'light'
   const [theme, setThemeState] = useState(() => {
     try {
-      const saved = localStorage.getItem('foodspot_theme');
+      const saved = localStorage.getItem('altsfoodspot_theme') || localStorage.getItem('foodspot_theme');
       if (saved === 'dark' || saved === 'light') {
         return saved;
       }
@@ -23,7 +23,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     try {
-      localStorage.setItem('foodspot_theme', theme);
+      localStorage.setItem('altsfoodspot_theme', theme);
     } catch {
       // Ignore localStorage errors
     }
