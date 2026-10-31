@@ -16,8 +16,13 @@ import {
   FiShoppingBag,
   FiArrowLeft,
   FiX,
+  FiHome,
+  FiNavigation,
+  FiCompass,
+  FiHash,
 } from 'react-icons/fi';
 import '../styles/auth.css';
+import '../styles/deliveryAddress.css';
 
 const ProfilePage = () => {
   const { user, updateProfile, logout } = useAuth();
@@ -465,91 +470,123 @@ const ProfilePage = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSaveAddress} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form onSubmit={handleSaveAddress} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
-                  <label className="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    style={{ paddingLeft: '1rem' }}
-                    value={addressForm.fullName}
-                    onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
-                    required
-                  />
+                  <label className="form-label">
+                    Full Name <span className="required-star">*</span>
+                  </label>
+                  <div className="form-input-wrapper">
+                    <FiUser className="form-input-icon" />
+                    <input
+                      type="text"
+                      className="form-input address-form-input"
+                      value={addressForm.fullName}
+                      onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
+                      placeholder="e.g. John Doe"
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="form-group">
-                  <label className="form-label">10-Digit Mobile</label>
-                  <input
-                    type="tel"
-                    maxLength="10"
-                    className="form-input"
-                    style={{ paddingLeft: '1rem' }}
-                    value={addressForm.mobile}
-                    onChange={(e) => setAddressForm({ ...addressForm, mobile: e.target.value })}
-                    required
-                  />
+                  <label className="form-label">
+                    10-Digit Mobile <span className="required-star">*</span>
+                  </label>
+                  <div className="form-input-wrapper">
+                    <FiPhone className="form-input-icon" />
+                    <input
+                      type="tel"
+                      maxLength="10"
+                      className="form-input address-form-input"
+                      value={addressForm.mobile}
+                      onChange={(e) => setAddressForm({ ...addressForm, mobile: e.target.value.replace(/\D/g, '') })}
+                      placeholder="e.g. 9876543210"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">House / Flat / Building No.</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  style={{ paddingLeft: '1rem' }}
-                  value={addressForm.houseNo}
-                  onChange={(e) => setAddressForm({ ...addressForm, houseNo: e.target.value })}
-                  required
-                />
+                <div className="form-input-wrapper">
+                  <FiHome className="form-input-icon" />
+                  <input
+                    type="text"
+                    className="form-input address-form-input"
+                    value={addressForm.houseNo}
+                    onChange={(e) => setAddressForm({ ...addressForm, houseNo: e.target.value })}
+                    placeholder="e.g. Flat 402, Sunshine Apts"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
-                <label className="form-label">Street / Colony / Landmark</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  style={{ paddingLeft: '1rem' }}
-                  value={addressForm.street}
-                  onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
-                  required
-                />
+                <label className="form-label">
+                  Street / Colony / Landmark <span className="required-star">*</span>
+                </label>
+                <div className="form-input-wrapper">
+                  <FiMapPin className="form-input-icon" />
+                  <input
+                    type="text"
+                    className="form-input address-form-input"
+                    value={addressForm.street}
+                    onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
+                    placeholder="e.g. 12th Main Road, Near Sony Signal"
+                    required
+                  />
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
-                  <label className="form-label">City</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    style={{ paddingLeft: '1rem' }}
-                    value={addressForm.city}
-                    onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                    required
-                  />
+                  <label className="form-label">
+                    City <span className="required-star">*</span>
+                  </label>
+                  <div className="form-input-wrapper">
+                    <FiNavigation className="form-input-icon" />
+                    <input
+                      type="text"
+                      className="form-input address-form-input"
+                      value={addressForm.city}
+                      onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
+                      placeholder="e.g. Bangalore"
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="form-group">
                   <label className="form-label">State</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    style={{ paddingLeft: '1rem' }}
-                    value={addressForm.state}
-                    onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
-                    required
-                  />
+                  <div className="form-input-wrapper">
+                    <FiCompass className="form-input-icon" />
+                    <input
+                      type="text"
+                      className="form-input address-form-input"
+                      value={addressForm.state}
+                      onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
+                      placeholder="e.g. Karnataka"
+                    />
+                  </div>
                 </div>
+
                 <div className="form-group">
-                  <label className="form-label">Pincode (6 digits)</label>
-                  <input
-                    type="text"
-                    maxLength="6"
-                    className="form-input"
-                    style={{ paddingLeft: '1rem' }}
-                    value={addressForm.pincode}
-                    onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
-                    required
-                  />
+                  <label className="form-label">
+                    Pincode (6 digits) <span className="required-star">*</span>
+                  </label>
+                  <div className="form-input-wrapper">
+                    <FiHash className="form-input-icon" />
+                    <input
+                      type="text"
+                      maxLength="6"
+                      className="form-input address-form-input"
+                      value={addressForm.pincode}
+                      onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value.replace(/\D/g, '') })}
+                      placeholder="e.g. 560034"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 

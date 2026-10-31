@@ -15,11 +15,20 @@ import {
   FiShield,
   FiArrowRight,
   FiArrowLeft,
+  FiUser,
+  FiPhone,
+  FiHome,
+  FiNavigation,
+  FiCompass,
+  FiHash,
+  FiCheck,
 } from 'react-icons/fi';
+import { IoFastFoodOutline } from 'react-icons/io5';
 import UpiQrModal, { UPI_PROVIDERS } from '../components/checkout/UpiQrModal';
 import { getDishQuantity } from '../services/mockData';
 import '../styles/checkout.css';
 import '../styles/upiPayment.css';
+import '../styles/deliveryAddress.css';
 
 const QrIcon = ({ size = 18, className = '' }) => (
   <svg
@@ -75,6 +84,7 @@ const CheckoutPage = () => {
     state: 'Karnataka',
     pincode: '560034',
   });
+  const [addressType, setAddressType] = useState('Home'); // 'Home' | 'Work' | 'Other'
 
   const [paymentMethod, setPaymentMethod] = useState('UPI'); // 'COD' | 'UPI' | 'CARD'
   const [upiMode, setUpiMode] = useState('QR'); // 'QR' | 'VPA'
@@ -294,6 +304,23 @@ const CheckoutPage = () => {
           </button>
         </div>
 
+        {/* Brand Assurance Strip */}
+        <div className="checkout-brand-strip">
+          <div className="checkout-brand-identity">
+            <div className="checkout-brand-icon">
+              <IoFastFoodOutline />
+            </div>
+            <div className="checkout-brand-title">
+              <span className="checkout-brand-badge">ALTS</span>
+              <span className="checkout-brand-food">FOOD</span>
+              <span className="checkout-brand-spot">SPOT</span>
+            </div>
+          </div>
+          <div className="checkout-express-pill">
+            ⚡ 30-Min Hot Express Delivery • Safe & Hygienic
+          </div>
+        </div>
+
         <div style={{ marginBottom: '2.5rem' }}>
           <h1 style={{ fontSize: '2rem' }}>Checkout & Payment</h1>
           <p style={{ color: 'var(--text-muted)' }}>Confirm your delivery destination and simulated payment</p>
@@ -320,128 +347,209 @@ const CheckoutPage = () => {
 
               {!showNewAddressForm ? (
                 <div className="address-cards-grid">
-                  {addresses.map((addr) => (
-                    <div
-                      key={addr._id}
-                      className={`address-select-card ${selectedAddressId === addr._id ? 'selected' : ''}`}
-                      onClick={() => setSelectedAddressId(addr._id)}
-                    >
-                      {selectedAddressId === addr._id && (
-                        <FiCheckCircle
-                          style={{
-                            position: 'absolute',
-                            top: '1rem',
-                            right: '1rem',
-                            color: 'var(--primary)',
-                            fontSize: '1.2rem',
-                          }}
-                        />
-                      )}
-                      <div className="address-recipient-name">
-                        {addr.fullName} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 'normal' }}>({addr.mobile})</span>
+                  {addresses.map((addr) => {
+                    const isSelected = selectedAddressId === addr._id;
+                    return (
+                      <div
+                        key={addr._id}
+                        className={`address-select-card ${isSelected ? 'selected' : ''}`}
+                        onClick={() => setSelectedAddressId(addr._id)}
+                      >
+                        <div className="address-card-header">
+                          <span className="address-tag-badge">
+                            {addr.isDefault ? '⭐ Default' : '📍 Delivery'}
+                          </span>
+                          <div className="address-radio-indicator">
+                            {isSelected && <div className="address-radio-dot" />}
+                          </div>
+                        </div>
+
+                        <div className="address-recipient-name">
+                          <span>{addr.fullName}</span>
+                          <span className="address-phone-pill">
+                            <FiPhone size={12} /> {addr.mobile}
+                          </span>
+                        </div>
+
+                        <div className="address-text">
+                          {addr.houseNo ? `${addr.houseNo}, ` : ''}{addr.street}, {addr.city}, {addr.state || 'Karnataka'} - {addr.pincode}
+                        </div>
                       </div>
-                      <div className="address-text">
-                        {addr.houseNo ? `${addr.houseNo}, ` : ''}{addr.street}, {addr.city}, {addr.state} - {addr.pincode}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
-                <form onSubmit={handleSaveNewAddress} style={{ background: 'var(--bg-main)', padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Enter Complete Delivery Address</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                    <div className="form-group">
-                      <label className="form-label">Full Name *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.fullName}
-                        onChange={(e) => setNewAddress({ ...newAddress, fullName: e.target.value })}
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">10-Digit Mobile *</label>
-                      <input
-                        type="tel"
-                        maxLength="10"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.mobile}
-                        onChange={(e) => setNewAddress({ ...newAddress, mobile: e.target.value })}
-                        placeholder="9876543210"
-                      />
+                <form onSubmit={handleSaveNewAddress} className="address-form-box">
+                  <div className="address-form-header">
+                    <div>
+                      <div className="address-form-header-title">
+                        <FiMapPin style={{ color: 'var(--primary)' }} />
+                        <span>Enter Complete Delivery Address</span>
+                      </div>
+                      <div className="address-form-header-sub">
+                        Accurate delivery details ensure your hot food arrives within 30 minutes
+                      </div>
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem', marginBottom: '1rem' }}>
+                  {/* Address Type Tag Selector */}
+                  <div className="address-type-selector">
+                    <button
+                      type="button"
+                      className={`address-type-btn ${addressType === 'Home' ? 'active' : ''}`}
+                      onClick={() => setAddressType('Home')}
+                    >
+                      <span>🏠</span> Home
+                    </button>
+                    <button
+                      type="button"
+                      className={`address-type-btn ${addressType === 'Work' ? 'active' : ''}`}
+                      onClick={() => setAddressType('Work')}
+                    >
+                      <span>🏢</span> Work
+                    </button>
+                    <button
+                      type="button"
+                      className={`address-type-btn ${addressType === 'Other' ? 'active' : ''}`}
+                      onClick={() => setAddressType('Other')}
+                    >
+                      <span>📍</span> Other
+                    </button>
+                  </div>
+
+                  <div className="address-grid-2col">
                     <div className="form-group">
-                      <label className="form-label">Flat / House No.</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.houseNo}
-                        onChange={(e) => setNewAddress({ ...newAddress, houseNo: e.target.value })}
-                        placeholder="A-402, Sunshine Apts"
-                      />
+                      <label className="form-label">
+                        Full Name <span className="required-star">*</span>
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiUser className="form-input-icon" />
+                        <input
+                          type="text"
+                          className="form-input address-form-input"
+                          value={newAddress.fullName}
+                          onChange={(e) => setNewAddress({ ...newAddress, fullName: e.target.value })}
+                          placeholder="e.g. John Doe"
+                          required
+                        />
+                      </div>
                     </div>
+
                     <div className="form-group">
-                      <label className="form-label">Street Address & Landmark *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.street}
-                        onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
-                        placeholder="12th Main, Koramangala 4th Block"
-                      />
+                      <label className="form-label">
+                        10-Digit Mobile Number <span className="required-star">*</span>
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiPhone className="form-input-icon" />
+                        <input
+                          type="tel"
+                          maxLength="10"
+                          className="form-input address-form-input"
+                          value={newAddress.mobile}
+                          onChange={(e) => setNewAddress({ ...newAddress, mobile: e.target.value.replace(/\D/g, '') })}
+                          placeholder="e.g. 9876543210"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                  <div className="address-grid-1-2col">
                     <div className="form-group">
-                      <label className="form-label">City *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.city}
-                        onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-                      />
+                      <label className="form-label">
+                        Flat / House / Building No.
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiHome className="form-input-icon" />
+                        <input
+                          type="text"
+                          className="form-input address-form-input"
+                          value={newAddress.houseNo}
+                          onChange={(e) => setNewAddress({ ...newAddress, houseNo: e.target.value })}
+                          placeholder="e.g. Flat 402, Sunshine Apts"
+                        />
+                      </div>
                     </div>
+
                     <div className="form-group">
-                      <label className="form-label">State</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.state}
-                        onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Postal Pincode *</label>
-                      <input
-                        type="text"
-                        maxLength="6"
-                        className="form-input"
-                        style={{ paddingLeft: '1rem' }}
-                        value={newAddress.pincode}
-                        onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value })}
-                      />
+                      <label className="form-label">
+                        Street Address & Landmark <span className="required-star">*</span>
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiMapPin className="form-input-icon" />
+                        <input
+                          type="text"
+                          className="form-input address-form-input"
+                          value={newAddress.street}
+                          onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
+                          placeholder="e.g. 12th Main Road, Near Sony Signal"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '0.75rem' }}>
-                    <button type="submit" className="btn btn-primary btn-sm">
+                  <div className="address-grid-3col">
+                    <div className="form-group">
+                      <label className="form-label">
+                        City <span className="required-star">*</span>
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiNavigation className="form-input-icon" />
+                        <input
+                          type="text"
+                          className="form-input address-form-input"
+                          value={newAddress.city}
+                          onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+                          placeholder="e.g. Bangalore"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        State
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiCompass className="form-input-icon" />
+                        <input
+                          type="text"
+                          className="form-input address-form-input"
+                          value={newAddress.state}
+                          onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
+                          placeholder="e.g. Karnataka"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        Postal Pincode <span className="required-star">*</span>
+                      </label>
+                      <div className="form-input-wrapper">
+                        <FiHash className="form-input-icon" />
+                        <input
+                          type="text"
+                          maxLength="6"
+                          className="form-input address-form-input"
+                          value={newAddress.pincode}
+                          onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value.replace(/\D/g, '') })}
+                          placeholder="e.g. 560034"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="address-form-actions">
+                    <button type="submit" className="btn btn-primary">
                       Save & Use This Address
                     </button>
                     {addresses.length > 0 && (
                       <button
                         type="button"
-                        className="btn btn-outline btn-sm"
+                        className="btn btn-outline"
                         onClick={() => setShowNewAddressForm(false)}
                         style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
                       >

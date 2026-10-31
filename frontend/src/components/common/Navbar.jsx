@@ -51,7 +51,11 @@ const Navbar = () => {
             <IoFastFoodOutline />
           </div>
           <div className="brand-name">
-            <div className="brand-title">ALTS FOOD<span> spot</span></div>
+            <div className="brand-title">
+              <span className="brand-badge-alts">ALTS</span>
+              <span className="brand-text-food">FOOD</span>
+              <span className="brand-text-spot">SPOT</span>
+            </div>
             <span className="brand-tagline">Your cravings. Our mission.</span>
           </div>
         </Link>

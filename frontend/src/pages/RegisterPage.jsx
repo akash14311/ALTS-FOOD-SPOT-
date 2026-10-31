@@ -253,7 +253,10 @@ const RegisterPage = () => {
       <div className="auth-card" style={{ maxWidth: '490px' }}>
         <div className="auth-header">
           <Link to="/" className="auth-brand-logo">
-            <IoFastFoodOutline /> ALTS FOOD<span> spot</span>
+            <IoFastFoodOutline style={{ color: 'var(--primary)', fontSize: '1.6rem' }} />
+            <span className="brand-badge-alts">ALTS</span>
+            <span className="brand-text-food">FOOD</span>
+            <span className="brand-text-spot">SPOT</span>
           </Link>
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">

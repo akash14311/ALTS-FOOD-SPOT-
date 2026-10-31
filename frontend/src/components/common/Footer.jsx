@@ -13,7 +13,9 @@ const Footer = () => {
           <div>
             <div className="footer-brand-title">
               <IoFastFoodOutline style={{ color: 'var(--primary)', fontSize: '1.75rem' }} />
-              ALTS FOOD<span> spot</span>
+              <span className="brand-badge-alts">ALTS</span>
+              <span className="brand-text-food">FOOD</span>
+              <span className="brand-text-spot">SPOT</span>
             </div>
             <p className="footer-desc">
               Your cravings. Our mission. Delivering hot, mouthwatering meals from top local kitchens straight to your doorstep with lightning speed.

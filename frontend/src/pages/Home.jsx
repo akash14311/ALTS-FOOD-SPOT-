@@ -651,7 +651,7 @@ const Home = () => {
             Seamless & Effortless
           </span>
           <h2 className="section-title" style={{ marginTop: '0.35rem', marginBottom: '0.75rem' }}>
-            How ALTS FOOD spot Works
+            How <span style={{ color: 'var(--primary)' }}>ALTS FOOD SPOT</span> Works
           </h2>
           <p className="section-subtitle" style={{ maxWidth: '600px', margin: '0 auto' }}>
             From your appetite craving to the first piping hot bite in three simple steps.
@@ -732,7 +732,7 @@ const Home = () => {
               <span style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '0.9rem', textTransform: 'uppercase' }}>
                 On The Move?
               </span>
-              <h2 className="app-banner-title">ALTS FOOD spot in Your Pocket</h2>
+              <h2 className="app-banner-title">ALTS FOOD SPOT in Your Pocket</h2>
               <p className="app-banner-desc">
                 Download our award-winning food delivery app to enjoy exclusive app-only discounts, live delivery push notifications, and fast one-tap reordering.
               </p>

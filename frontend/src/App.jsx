@@ -37,6 +37,7 @@ const PageLoader = () => (
 import './styles/variables.css';
 import './styles/global.css';
 import './styles/components.css';
+import './styles/deliveryAddress.css';
 
 // Protected Route Guard with return destination memory
 export const ProtectedRoute = ({ children }) => {
